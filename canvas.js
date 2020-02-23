@@ -1,3 +1,5 @@
+
+
 var area = document.getElementById("area");
 area.width = 800;
 area.height = area.width*3/4;
@@ -36,6 +38,9 @@ var bulletArr = new Array;
 var OutOfScreenVector = new vec2();
 var OutofScreen = 0;
 var stopped = 0;
+
+
+var coll = new SAT();
 function updateGame(){
     frames++;
     con.fillStyle = "black";

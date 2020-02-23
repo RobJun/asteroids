@@ -1,4 +1,4 @@
-class bullet{
+class bullet {
     constructor(){
     this.vertecies = [
         0.008, 0.008,
@@ -11,6 +11,8 @@ class bullet{
     this.direction = new vec2;
     this.center = new vec2(0,0);
     this.initCenter = new vec2(0,0);
+    this.collision = 0;
+    this.satIndex= -1;
     }
     disFromInit(){
         return this.center.getDistancefromP(this.initCenter);
@@ -29,6 +31,9 @@ class bullet{
         var vec = calculateVector(this.center,calculateTranslate(initPos));
             this.initCenter.x = this.center.x= vec.x;
             this.initCenter.y = this.center.y=vec.y;
+        this.normals =  new Array;
+        this.normals.push(new vec2(1.0,0.0), new vec2(0.0,1.0));
+
         return this;
 
     }
@@ -41,6 +46,10 @@ class bullet{
         var vec = calculateVector(this.center,calculateTranslate(this.direction));
             this.center.x = vec.x;
             this.center.y = vec.y;
+        
+            this.projection = this.center.dotProd(this.normals[0])/(this.normals[0].magnitude());
+
+        
     }
     draw(context){
         context.beginPath();
@@ -57,7 +66,10 @@ class bullet{
         context.fillStyle = this.color;
         context.fill();
         }
-        
+    
+    setSatIndex(index){
+        this.satIndex = index;
+    }
 
     delete(){
         delete this;

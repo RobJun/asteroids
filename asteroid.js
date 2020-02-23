@@ -6,15 +6,21 @@ class asteroid{
             0.10,-0.05,
             0.0,-0.10,
             -0.05,-0.04,
-            -0.02,-0.02,
-            -0.05,-0.02,
             -0.05,0.025,
              0.0,0.06,
          ];
     }
-    setUp(initPos,direction){
+    setUp(initPos,direction, radians){
         this.actualPosition = this.vertecies;
+    
     }
+
+    move(){
+        for(var i = 0; i < this.actualPosition.length; i+=2){
+
+         }
+    }
+
     draw(context){
         context.beginPath();
         var start = convertToPixels(this.actualPosition[0], this.actualPosition[1]);
@@ -29,4 +35,13 @@ class asteroid{
         context.strokeStyle = this.strokeColor;
         context.stroke();
         }
+
+    setSatIndex(index){
+        this.satIndex = index;
+    }
+
+    delete(){
+        delete this;
+    }
+
 }
