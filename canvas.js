@@ -39,8 +39,13 @@ var OutOfScreenVector = new vec2();
 var OutofScreen = 0;
 var stopped = 0;
 
+var bull = new bullet();
+bull.setUp(new vec2,new vec2);
+var sat = new SAT();
+sat.addSprite(bull);
+sat.addSprite(aster);
+sat.addSprite(Player);
 
-var coll = new SAT();
 function updateGame(){
     frames++;
     con.fillStyle = "black";
@@ -59,6 +64,7 @@ function updateGame(){
         OutOfScreenVector.x = -2*Player.getActPosPair(2).x;
         OutofScreen=1;
     }
+    
     if(Math.abs(Player.getActPosPair(2).y)+0.1>1.3){
         OutOfScreenVector.y = -2*Player.getActPosPair(2).y;
         OutofScreen=1;
@@ -70,10 +76,14 @@ function updateGame(){
         OutOfScreenVector.y = 0;
         OutofScreen = 0;
     }
+
+    //sat.updateAxis(Player);
+    console.log(sat.checkForCollision(Player,aster,1,con));
+    
+    
     Player.draw(con);
     aster.draw(con);
 
-    //TODO chage to magnitude traveled
     if(bulletArr.length > 0 && bulletArr[0].disFromInit() > Player.bulletRadius){
         bulletArr[0].delete();
         bulletArr.shift();
@@ -83,12 +93,18 @@ function updateGame(){
         bulletArr.push(new bullet);
         bulletArr[bulletArr.length-1].setUp(Player.getActPosPair(0),Player.getVertPair(0));
     }
-    bulletArr.forEach(element => {
+    bulletArr.forEach((element,index) => {
         element.move();
+        if(sat.checkForCollision(element,aster,1,con)){
+            element.delete();   
+            bulletArr.splice(index,1);
+        }
+
         element.draw(con);
         
     });
     Player.shoot = 0;
+    sat.drawAxis(con);
 }
 
 
@@ -97,9 +113,11 @@ document.addEventListener("keydown", (e)=>{
 
     if(e.keyCode === 37){
         radians = -1;
+        sat.updateAxis(Player);
     }
     if (e.keyCode === 39){
         radians = 1;
+        sat.updateAxis(Player);
     }
     if(e.keyCode === 87){
         forward = 1;
@@ -124,6 +142,5 @@ document.addEventListener("keyup", (e)=> {
         Player.shootFrames=-1;
     }
 })
-
 
 setInterval(updateGame,1000/60);

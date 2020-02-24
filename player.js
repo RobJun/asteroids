@@ -5,6 +5,11 @@ var Player = {
         0.0,0.0,
         -0.03,-0.03
     ],
+    collisionMap : [
+        0.0, 0.05,
+        0.03,-0.03,
+        -0.03,-0.03
+    ],
     health:100,
     playable : true,
     teleported : false,
@@ -14,6 +19,7 @@ var Player = {
     lineWidth : 1,
     angle : 0,
 
+    satIndex : -1,
     shoot: 0,
     shootFrames : -1,
     bulletRadius : 0.9,
@@ -44,6 +50,11 @@ var Player = {
         dir.x = moveVec.x * this.speed;
         dir.y = moveVec.y * this.speed;
         var diff = new vec2;
+        for(var i = 0; i < this.collisionMap.length;i+=2){
+            var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(rotate));
+            this.collisionMap[i] = rotateColMap.x;
+            this.collisionMap[i+1] = rotateColMap.y;
+        }
         for(var i = 0; i < this.actualPosition.length;i+=2){
             diff.x = this.actualPosition[i] - this.vertecies[i]
             diff.y = this.actualPosition[i+1]- this.vertecies[i+1];

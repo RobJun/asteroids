@@ -26,6 +26,7 @@ class vec2{
     dotProd(vector){
         return (this.x*vector.x + this.y*vector.y);
     }
+
     unitVector(){
         return new vec2(this.x/this.magnitude(), this.y/this.magnitude());
     }

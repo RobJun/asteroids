@@ -12,6 +12,7 @@ class asteroid{
     }
     setUp(initPos,direction, radians){
         this.actualPosition = this.vertecies;
+        this.collisionMap = this.vertecies.slice();
     
     }
 
