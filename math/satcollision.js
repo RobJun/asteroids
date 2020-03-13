@@ -46,25 +46,27 @@ class SAT{
         if(object.satIndex == -1) return "error not in collision detection";
         var axis = this.axis[object.satIndex];
 
-        for(var ind = 0, element = axis[ind]; ind < axis.length-2;ind++){
-            element.y = (object.collisionMap[2*(ind+1)]-object.collisionMap[2*ind]);
-            element.x = -(object.collisionMap[2*(ind+1)+1]-object.collisionMap[2*ind+1]);
+        for(var i = 0; i < axis.length-1;i++){
+            var element = axis[i];
+            element.y = (object.collisionMap[2*(i+1)]-object.collisionMap[2*i]);
+            element.x = -(object.collisionMap[2*(i+1)+1]-object.collisionMap[2*i+1]);
             element = element.unitVector();
         };
         axis[axis.length-1].x = (object.collisionMap[0]-object.collisionMap[object.collisionMap.length-2]);
         axis[axis.length-1].y = (object.collisionMap[1]-object.collisionMap[object.collisionMap.length-1]);
         axis[axis.length-1] = axis[axis.length-1].unitVector();
 
+
+
     }
-    checkForCollision(object1 = {actualPosition},object2 = {actualPosition},drawAxis,context){
+    checkForCollision(object1 = {actualPosition, satIndex},object2 = {actualPosition, satIndex},drawAxis,context){
         var obj2Max, obj2Min;
         var obj1Max, obj1Min;
-        var collision = 0;
-        var numberAx = 0;
-        this.axis.forEach((element, k) => {
-            element.forEach((vector, j) => {
-                //obj2Max = obj2Min = obj1Max =  obj1Min = NaN;
-                numberAx++;
+        var testedAxis = new Array;
+        testedAxis.push(this.axis[object1.satIndex].slice(),this.axis[object2.satIndex].slice());
+        for(var k = 0; k < testedAxis.length;k++){
+            for(var j = 0; j < testedAxis[k].length;j++){
+                var vector = testedAxis[k][j];
                 for(var i = 0; i < object1.actualPosition.length-1;i+=2){
                     
             var projFloat = (vector.dotProd({x : object1.actualPosition[i], y : object1.actualPosition[i+1]})/vector.magnitude());
@@ -93,38 +95,15 @@ class SAT{
                         }
                     }
                 }
-                if(this.draw && drawAxis){
-                var vect = new vec2(vector.x*obj1Min, vector.y*obj1Min);
-                var axisV = convertToPixels(vect.x,vect.y);
-                context.beginPath();
-                context.moveTo(axisV.x, axisV.y);
-                vect = new vec2(vector.x*obj1Max, vector.y*obj1Max);
-                axisV = convertToPixels(vect.x,vect.y);
-                context.lineTo(axisV.x,axisV.y);
-                context.closePath();
-                context.strokeStyle= "yellow";
-                context.stroke();
-
-                vect = new vec2(vector.x*obj2Min, vector.y*obj2Min);
-                axisV = convertToPixels(vect.x,vect.y);
-                context.beginPath();
-                context.moveTo(axisV.x, axisV.y);
-                vect = new vec2(vector.x*obj2Max, vector.y*obj2Max);
-                axisV = convertToPixels(vect.x,vect.y);
-                context.lineTo(axisV.x,axisV.y);
-                context.closePath();
-                context.strokeStyle= "green";
-                context.stroke();
+                if(drawAxis==1){
+                    this.drawObjectProj(context,{max :obj1Max, min: obj1Min},{max :obj2Max, min: obj2Min},vector);
                 }
 
-                if((obj2Max - obj1Min) * (obj1Max - obj2Min) >= 0) 
-                {collision++}
-            }) 
-        });
-        if(collision == numberAx){
-            return true;
+                if(!((obj2Max - obj1Min) * (obj1Max - obj2Min) >= 0))
+                {return false}
+            }
         }
-        return false;
+        return true;
     }
 
     deleteAxis(object = {satIndex}){
@@ -145,5 +124,47 @@ class SAT{
         context.stroke();
             })
         })
+    }
+
+    drawObjectProj(context,object1 = {max, min}, object2 = {max,min}, vector = {x,y}){
+        if(this.draw){
+            var vect = new vec2(vector.x*object1.min, vector.y*object1.min);
+            var axisV = convertToPixels(vect.x,vect.y);
+            context.beginPath();
+            context.moveTo(axisV.x, axisV.y);
+            vect = new vec2(vector.x*object1.max, vector.y*object1.max);
+            axisV = convertToPixels(vect.x,vect.y);
+            context.lineTo(axisV.x,axisV.y);
+            context.closePath();
+            context.strokeStyle= "yellow";
+            context.stroke();
+
+            vect = new vec2(vector.x*object2.min, vector.y*object2.min);
+            axisV = convertToPixels(vect.x,vect.y);
+            context.beginPath();
+            context.moveTo(axisV.x, axisV.y);
+            vect = new vec2(vector.x*object2.max, vector.y*object2.max);
+            axisV = convertToPixels(vect.x,vect.y);
+            context.lineTo(axisV.x,axisV.y);
+            context.closePath();
+            context.strokeStyle= "green";
+            context.stroke();
+            }
+    }
+
+
+
+    bounceObjects(object1 = {direction,center}, object2 = {direction,center}){
+        var line = new vec2(object1.center.x - object2.center.x, object1.center.y-object2.center.y);
+        var angle = Math.acos(line.dotProd(object1.direction)/line.magnitude()*object1.direction.magnitude());
+        var Constant = new vec2(object1.direction.x+object2.direction.x,object1.direction.y+object2.direction.y);
+        Constant.x -= (object2.direction.x - object1.direction.x);
+        Constant.y -= (object2.direction.y - object1.direction.y);
+        Constant.x/=2;
+        Constant.y /=2;
+        object1.direction.x = (object2.direction.x + Constant.x - object1.direction.x)*0.9;
+        object1.direction.y = (object2.direction.y + Constant.y - object1.direction.y)*0.9;
+        object2.direction = Constant;
+
     }
 }

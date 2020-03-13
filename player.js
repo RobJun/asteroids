@@ -16,13 +16,14 @@ var Player = {
     speed: 0.01,
     rotSpeed: 0.1,
     strokeColor: '#CCCCCC',
-    lineWidth : 1,
+    lineWidth : 3,
     angle : 0,
 
     satIndex : -1,
     shoot: 0,
     shootFrames : -1,
     bulletRadius : 0.9,
+    direction : new vec2,
 
     getVertPair : function(pos){
         return {x : this.vertecies[pos*2], y: this.vertecies[pos*2+1]};
@@ -42,13 +43,13 @@ var Player = {
         }
     },
 
-    move : function(moveVec, rotate){
+    move : function(moveVec = {x,y}, rotate){
         rotate *= this.rotSpeed;
         this.angle += rotate;
         var moveVec = calculateVector(moveVec,calculateRotationMat(this.angle));
-        var dir = new vec2(0,0);
-        dir.x = moveVec.x * this.speed;
-        dir.y = moveVec.y * this.speed;
+        moveVec.x *= this.speed;
+        moveVec.y *= this.speed;
+        this.direction = moveVec;
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
             var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(rotate));
@@ -59,14 +60,14 @@ var Player = {
             diff.x = this.actualPosition[i] - this.vertecies[i]
             diff.y = this.actualPosition[i+1]- this.vertecies[i+1];
 
-            var copyT = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(rotate));
+            var copy = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(rotate));
 
             var vec = calculateVector({x: this.actualPosition[i] ,y: this.actualPosition[i+1]}, calculateTranslate(diff.invert()));
-                vec = calculateVector(vec,calculateTranslate({ x : diff.x + dir.x, y : diff.y + dir.y}).multiply(calculateRotationMat(rotate)));
+                vec = calculateVector(vec,calculateTranslate({ x : diff.x + this.direction.x, y : diff.y + this.direction.y}).multiply(calculateRotationMat(rotate)));
             this.actualPosition[i] = vec.x;
             this.actualPosition[i+1] = vec.y;
-            this.vertecies[i] = copyT.x;
-            this.vertecies[i+1] = copyT.y;
+            this.vertecies[i] = copy.x;
+            this.vertecies[i+1] = copy.y;
         }
     },
 

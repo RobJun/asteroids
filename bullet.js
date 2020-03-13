@@ -31,8 +31,6 @@ setUp(initPos, direction) {
     var vec = calculateVector(this.center,calculateTranslate(initPos));
     this.initCenter.x = this.center.x= vec.x;
             this.initCenter.y = this.center.y=vec.y;
-        this.normals =  new Array;
-        this.normals.push(new vec2(1.0,0.0), new vec2(0.0,1.0));
 
         return this;
 
@@ -46,8 +44,6 @@ setUp(initPos, direction) {
         var vec = calculateVector(this.center,calculateTranslate(this.direction));
             this.center.x = vec.x;
             this.center.y = vec.y;
-        
-            this.projection = this.center.dotProd(this.normals[0])/(this.normals[0].magnitude());
 
         
     }
@@ -67,8 +63,8 @@ setUp(initPos, direction) {
         context.fill();
         }
     
-    setSatIndex(index){
-        this.satIndex = index;
+    setSatIndex(object = {satIndex}){
+        this.satIndex = object.satIndex;
     }
 
     delete(){

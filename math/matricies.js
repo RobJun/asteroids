@@ -51,3 +51,10 @@ function calculateTranslate(trans = {x,y}){
     mat.matricies[6] = trans.y;
     return mat;
 }
+
+function calculateScaleMat(scale = {x,y}){
+    var mat = new mat4x4();
+    mat.matricies[0] = scale.x;
+    mat.matricies[5] = scale.y;
+    return mat;
+}

@@ -11,7 +11,7 @@ class vec2{
         this.y = y;
     }
     invert(){
-        return {x : -this.x, y : -this.y};
+        return new vec2(-this.x,-this.y);
     }
 
 
