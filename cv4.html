@@ -1,0 +1,63 @@
+<script>
+    class Person{
+        constructor(name,surname,age,gender){
+                this.first = name,
+                this.last = surname
+            this.age = age;
+            if(gender === 'M' || gender === 'F'){
+                this.gender = gender;
+            }else{
+                console.log("Zadajte správne pohlavie");
+            }
+        }
+
+        salutations(){
+            if(this.gender === 'M')
+                return "pán"; 
+            else if(this.gender=== 'F')
+                return "pani";
+        }
+
+        greeting(){
+            console.log(`Dobrý deň, volám sa ${this.salutations()} ${this.last} ${this.first}`);
+        }
+
+    }
+
+
+    class Teacher extends Person{
+        constructor(subject,myStudensts,name,surname,age,gender){
+            super(name,surname,age,gender);
+
+            this.subject = subject;
+            this.myStudensts = myStudensts.slice();
+        }
+
+        greeting(){
+            console.log(`Dobrý deň, volám sa ${this.salutations()} ${this.last} ${this.first} a budem Vás učiť ${this.subject}`);
+        }
+
+        addStudent(student){
+            this.myStudensts.push(student);
+        }
+
+        pickRandomStudent(){
+            return this.myStudensts[Math.floor(Math.random()* this.myStudensts.length)];
+        }
+    }
+
+    class Student extends Person{
+        constructor(subjects,name,surname,age,gender){
+            super(name,surname,age,gender);
+            this.subjects = subjects.slice(); 
+        }
+
+        greeting(){
+            console.log(`Ahoj, som +student a volám sa ${this.last} ${this.first}`);
+        }
+
+        addSubject(subject){
+            this.subjects.push(subject);
+        }
+    }
+</script>

@@ -97,12 +97,11 @@ class asteroid{
         }
         context.closePath();
         context.lineWidth = this.lineWidth;
-        var asterImag = new Image;
-        asterImag.src = "./res/asteroids.jpg";
-        var pattern = context.createPattern(asterImag,"repeat")
-        context.fillStyle = "gray";
+        var img = new Image();
+        img.src = 'asteroids.jpg'
+        context.fillStyle ='gray';
         context.fill();
-        context.strokeStyle = this.lineWidth;
+        //context.strokeStyle = this.lineWidth;
        // context.stroke();
         }
 

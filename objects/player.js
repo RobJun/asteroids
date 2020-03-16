@@ -15,7 +15,7 @@ var Player = {
     teleported : false,
     speed: 0.01,
     rotSpeed: 0.1,
-    strokeColor: '#CCCCCC',
+    strokeColor: 'green',
     lineWidth : 3,
     angle : 0,
 
