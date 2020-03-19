@@ -60,6 +60,9 @@ function updateGame(){
     con.scale(0.5,0.5);
     con.drawImage(background,0,0,1600,1200);
     con.scale(2,2);
+    con.font = "30px 'Orbitron'";
+    con.fillStyle = "white";
+    con.fillText("skore: 9999", 300, 50);
     if(forward){
         moveVec.y = 1.0;
     }
