@@ -12,7 +12,7 @@ class asteroid{
             -0.05,0.025,
              0.0,0.06
          ];*/
-         /*
+         
          this.vertecies = [
             0.0,0.25,
             0.2,0.15,
@@ -22,9 +22,9 @@ class asteroid{
             -0.3,0.0,
             -0.2,0.2,
 
-         ];*/
+         ];
 
-         this.vertecies = [
+         /*this.vertecies = [
              0.0,0.3,
              0.15,0.25,
              0.2,0.1,
@@ -36,7 +36,7 @@ class asteroid{
              -0.2,-0.1,
              -0.2,0.1,
              -0.05,0.15
-         ]
+         ]*/
          this.collisionMap = [
             0.07,0.05,
             0.10,0.0,

@@ -3,6 +3,6 @@ class particles {
         this.color = "white";
     }
     render(){
-
+        
     }
 }

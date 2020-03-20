@@ -20,6 +20,9 @@ var gameArea = {
 var background = new Image;
 background.src = "./res/background.jpg";
 
+var icon = new Image;
+icon.src = "./res/sound.png";
+
 var area = document.getElementById("area");
 area.width = 800;
 area.height = area.width*gameArea.aspectRatio;
@@ -143,7 +146,7 @@ function updateGame(){
     });
     
     Player.draw(con);
-    //aster.draw(con);
+    aster.draw(con);
     //aster2.draw(con);
     //aster3.draw(con);
 
