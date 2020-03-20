@@ -1,6 +1,6 @@
 class asteroid{
     constructor(){
-        this.vertecies = [
+        /*this.vertecies = [
             0.07,0.05,
             0.10,0.0,
             0.10,-0.05,
@@ -11,7 +11,32 @@ class asteroid{
             -0.05,-0.01,
             -0.05,0.025,
              0.0,0.06
-         ];
+         ];*/
+         /*
+         this.vertecies = [
+            0.0,0.25,
+            0.2,0.15,
+            0.35,-0.05,
+            0.2,-0.2,
+            0,-0.25,
+            -0.3,0.0,
+            -0.2,0.2,
+
+         ];*/
+
+         this.vertecies = [
+             0.0,0.3,
+             0.15,0.25,
+             0.2,0.1,
+             0.15,0.0,
+             0.2,-0.1,
+             0.1,-0.3,
+             0.0,-0.2,
+             -0.1,-0.25,
+             -0.2,-0.1,
+             -0.2,0.1,
+             -0.05,0.15
+         ]
          this.collisionMap = [
             0.07,0.05,
             0.10,0.0,
@@ -30,13 +55,13 @@ class asteroid{
          this.center = new vec2;
 
          for(var i = 0; i < this.collisionMap.length;i+=2){
-            var vector = calculateVector({x:this.collisionMap[i],y:this.collisionMap[i+1]},calculateScaleMat(new vec2(1.5,1.5)));
+            var vector = calculateVector({x:this.collisionMap[i],y:this.collisionMap[i+1]},calculateScaleMat(new vec2(3,3)));
             this.collisionMap[i] = vector.x;
             this.collisionMap[i+1] = vector.y;
         }
 
          for(var i = 0; i < this.vertecies.length;i+=2){
-             var vector = calculateVector({x:this.vertecies[i],y:this.vertecies[i+1]},calculateScaleMat(new vec2(1.5,1.5)));
+             var vector = calculateVector({x:this.vertecies[i],y:this.vertecies[i+1]},calculateScaleMat(new vec2(2,2)));
              this.vertecies[i] = vector.x;
              this.vertecies[i+1] = vector.y;
          }
@@ -97,8 +122,6 @@ class asteroid{
         }
         context.closePath();
         context.lineWidth = this.lineWidth;
-        var img = new Image();
-        img.src = 'asteroids.jpg'
         context.fillStyle ='gray';
         context.fill();
         //context.strokeStyle = this.lineWidth;

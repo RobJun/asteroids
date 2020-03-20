@@ -143,9 +143,9 @@ function updateGame(){
     });
     
     Player.draw(con);
-    aster.draw(con);
-    aster2.draw(con);
-    aster3.draw(con);
+    //aster.draw(con);
+    //aster2.draw(con);
+    //aster3.draw(con);
 
     Player.shoot = 0;
     // sat.drawAxis(con);

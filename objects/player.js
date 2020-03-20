@@ -16,7 +16,7 @@ var Player = {
     speed: 0.01,
     rotSpeed: 0.1,
     strokeColor: 'green',
-    lineWidth : 3,
+    lineWidth : 10,
     angle : 0,
 
     satIndex : -1,
@@ -32,6 +32,11 @@ var Player = {
         return {x : this.actualPosition[pos*2], y: this.actualPosition[pos*2+1]};
     },
     setUp : function() {
+        for(var i = 0; i < this.vertecies.length;i+=2){
+            var vector = calculateVector({x:this.vertecies[i],y:this.vertecies[i+1]},calculateScaleMat(new vec2(10,10)));
+            this.vertecies[i] = vector.x;
+            this.vertecies[i+1] = vector.y;
+        }
         this.actualPosition = this.vertecies.slice();
     },
 
