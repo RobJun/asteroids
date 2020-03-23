@@ -10,7 +10,9 @@ class bullet extends Shape{
     this.direction = new vec2;
     this.center = new vec2(0,0);
     this.initCenter = new vec2(0,0);
-    this.speed = 0.01;
+    this.speed =0.5;
+
+    this.type = "bullet";
 }
 disFromInit(){
     return this.center.getDistancefromP(this.initCenter);
@@ -45,28 +47,5 @@ setUp(initPos, direction) {
             this.center.y = vec.y;
 
         
-    }
-    draw(context){
-        context.beginPath();
-        var start = convertToPixels(this.actualPosition[0], this.actualPosition[1]);
-        context.moveTo(start.x,start.y);
-        for(var i = 2; i < 8; i+=2 ){
-            start = convertToPixels(this.actualPosition[i],this.actualPosition[i+1]);
-            context.lineTo(start.x,start.y);    
-    
-        }
-        context.closePath();
-
-
-        context.fillStyle = this.color;
-        context.fill();
-        }
-    
-    setSatIndex(object = {satIndex}){
-        this.satIndex = object.satIndex;
-    }
-
-    delete(){
-        delete this;
     }
 }

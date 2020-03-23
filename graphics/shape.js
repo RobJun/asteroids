@@ -1,22 +1,30 @@
-class Shape{
-    constructor(vertecies, collisionMap, color ={fillColor, strokeColor}, lineWidth){
-        this.satIndex = -1;
-        this.speed = 0.5;
+class Shape extends _SUPER_OBJECT{
+    constructor(vertecies, collisionMap, color = {fillColor, strokeColor, lineWidth}){
+        super();
+
+        this.vertecies = vertecies || [
+            0.005, 0.005,
+            0.005,-0.005,
+            -0.005,-0.005,
+            -0.005,0.005
+        ]
+        this.collisionMap  = collisionMap || this.vertecies;
+        this.actualPosition = this.vertecies.slice();
+
         this.color = color.fillColor || undefined;
         this.colorS = color.strokeColor || undefined;
-        this.lineWidth = lineWidth;
-
-        this.playable = false;
-        this.speed = 0.0;
-        this.health = 0;
+        this.lineWidth = color.lineWidth || undefined;
 
     }
 
-    move(){
-
+    getVertPair(pos){
+        return {x : this.vertecies[pos*2], y: this.vertecies[pos*2+1]};
+    }
+    getActPosPair(pos){
+        return {x : this.actualPosition[pos*2], y: this.actualPosition[pos*2+1]};
     }
 
-    
+
     render(context){
         context.beginPath();
         var start = convertToPixels(this.actualPosition[0], this.actualPosition[1]);
@@ -27,26 +35,18 @@ class Shape{
             
         }
         context.closePath();
-        context.lineWidth = this.lineWidth;
         if(this.color !== undefined){
-        context.fillStyle =this.color;
+        context.fillStyle = this.color;
         context.fill();
         }
         if(this.colorS !== undefined){
-        context.strokeStyle = this.lineWidth;
-        context.strokeColor = this.colorS;
-         context.stroke();
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.colorS;
+        context.stroke();
         }
     }
     
     scale(vector, scaleVec){
         return calculateVector(vector,calculateScaleMat(scaleVec));
-    }
-    setSatIndex(object = {satIndex}){
-        this.satIndex = object.satIndex;
-    }
-
-    delete(){
-        delete this;
     }
 }

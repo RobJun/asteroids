@@ -1,6 +1,7 @@
 class asteroid extends Shape{
     constructor(){
         super(undefined,undefined,{fillColor : "gray"});
+        this.type = "asteroid";
         this.vertecies = [
             0.07,0.05,
             0.10,0.0,
@@ -88,6 +89,8 @@ class asteroid extends Shape{
 
 
         this.center = calculateVector(this.center,calculateTranslate(initPos));
+
+        return this;
     }
 
     move(){
@@ -115,8 +118,5 @@ class asteroid extends Shape{
         this.satIndex = object.satIndex;
     }
 
-    delete(){
-        delete this;
-    }
 
 }

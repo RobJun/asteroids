@@ -1,5 +1,7 @@
-class GameText{
+class GameText extends _SUPER_OBJECT{
     constructor(string, vector2 = {x,y}, properties = { font, size, color, align}){
+        super();
+        this.type = "text";
         this.text = string;
         this.vec = vector2;
         this.font = properties.font || "Arial";

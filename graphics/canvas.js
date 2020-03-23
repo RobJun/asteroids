@@ -1,27 +1,37 @@
-var gameArea = {
-    canvas : document.getElementById("area"),
-    aspectRatio: 3/4,
-    time : 0,
-    setUp : function(){
+class GameArea {
+    constructor(id,aspectRatio,width, stateMan){
+        this.canvas = document.getElementById(id);
         this.context = this.canvas.getContext("2d");
-        this.canvas.width = 800;
-        this.canvas.height= area.width*gameArea.aspectRatio;
-    },
+        this.aspectRatio = aspectRatio;
+        this.canvas.width = width;
+        this.canvas.height= this.canvas.width*aspectRatio;
+        this.stateManager = stateMan;
+        this.time = 0;
+        this.game = this;
+    }
 
-    clear : function(){
-        this.context.clearRect(0,0, this.canvas.width,this.canvas.height);
-    },
+    clear(context){
+        context.clearRect(0,0, this.canvas.width,this.canvas.height);
+    }
 
-    updateGame : function(...ObjectArray){
+    updateView(){
+        this.clear(this.context);
+        this.stateManager.render(this.context);
+        requestAnimationFrame(()=>{
+            this.updateView();
+        })
+    }
 
+    start(){
+        this.updateView();
     }
 }
 
 
-
+/*
 var area = document.getElementById("area");
 area.width = 800;
-area.height = area.width*gameArea.aspectRatio;
+area.height = area.width*3/4;
 var con = area.getContext("2d");
 
 var moveVec = new vec2(0.0,0.0);
@@ -31,6 +41,8 @@ var frames = 0;
 
 var skore = new GameText("skore: 0",new vec2(0.0,0.9),{font : "Orbitron",size : "30px"});
 var background = new GameImage("./res/background.jpg",new vec2(0,0),800,600);
+
+var powerUp = new PowerUp("./res/trojita.png",new vec2(0.3,0.3),32);
 
 Player.setUp();
 var aster = new asteroid();
@@ -46,11 +58,10 @@ var OutofScreen = 0;
 var stopped = 0;
 var collided = 0;
 
-var bull = new bullet();
-bull.setUp(new vec2,new vec2);
+var shape = new Shape(undefined,undefined,{});
 var sat = new SAT();
 
-sat.addSprite(bull);
+sat.addSprite(shape);
 sat.addSprite(aster);
 sat.addSprite(aster2);
 sat.addSprite(Player);
@@ -58,7 +69,6 @@ aster3.setSatIndex(aster);
 
 function updateGame(){
     frames++;
-    background.render(con);
     if(forward){
         moveVec.y = 1.0;
     }
@@ -72,6 +82,7 @@ function updateGame(){
     aster.move();
     aster2.move();
     aster3.move();
+    powerUp.move();
     if( Math.abs(Player.getActPosPair(2).x)+0.1>1.3){
         OutOfScreenVector.x = -2*Player.getActPosPair(2).x;
         OutofScreen=1;
@@ -123,10 +134,12 @@ function updateGame(){
     if(Player.shoot && Player.shootFrames%(60/10) == 0){
         bulletArr.push(new bullet);
         bulletArr[bulletArr.length-1].setUp(Player.getActPosPair(0),Player.getVertPair(0));
-        if(bull.satIndex != -1){
-            bulletArr[bulletArr.length-1].satIndex = bull.satIndex;
+        if(shape.satIndex != -1){
+            bulletArr[bulletArr.length-1].satIndex = shape.satIndex;
         }
     }
+    con.clearRect(0,0, area.width,area.height);
+    background.render(con);
     bulletArr.forEach((element,index) => {
         element.move();
         if(sat.checkForCollision(element,aster,1,con)){
@@ -137,15 +150,16 @@ function updateGame(){
         element.render(con);
         
     });
-    
-    Player.draw(con);
     aster.render(con);
     aster2.render(con);
     aster3.render(con);
+    powerUp.render(con);
     skore.render(con);
+    Player.render(con);
     Player.shoot = 0;
-    // sat.drawAxis(con);
 }
+
+
 
 
 
@@ -184,3 +198,4 @@ document.addEventListener("keyup", (e)=> {
 })
 
 setInterval(updateGame,1000/60);
+*/

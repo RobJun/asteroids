@@ -33,7 +33,7 @@ class vec2{
 
 
     static convertToPixels(vector){
-        return new vec2((area.width*vector.x+area.width)/2,(-area.height*vector.y+area.height)/2);
+        return new vec2((AREA.width*vector.x+AREA.width)/2,(-AREA.height*vector.y+AREA.height)/2);
     }
 }
 
