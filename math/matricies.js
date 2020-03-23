@@ -8,11 +8,6 @@ class mat4x4{
     }
 
     multiply(mat4){
-        /*
-            0 1 2 3       0 1 2 3
-            4 5 6 7    `  4 5 6 7    
-            8 9 1011      8 9 1011
-            12131415      12131415        */
             var data= new Float32Array(16);
             for (var row = 0; row < 4; row++)
             {

@@ -24,6 +24,7 @@ var Player = {
     shootFrames : -1,
     bulletRadius : 0.9,
     direction : new vec2,
+    
 
     getVertPair : function(pos){
         return {x : this.vertecies[pos*2], y: this.vertecies[pos*2+1]};

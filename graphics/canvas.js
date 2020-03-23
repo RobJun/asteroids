@@ -17,22 +17,20 @@ var gameArea = {
     }
 }
 
-var background = new Image;
-background.src = "./res/background.jpg";
 
-var icon = new Image;
-icon.src = "./res/sound.png";
 
 var area = document.getElementById("area");
 area.width = 800;
 area.height = area.width*gameArea.aspectRatio;
 var con = area.getContext("2d");
-con.drawImage(background,0,0,1920,1080);
 
 var moveVec = new vec2(0.0,0.0);
 var radians = 0;
 var forward = 0;
 var frames = 0;
+
+var skore = new GameText("skore: 0",new vec2(0.0,0.9),{font : "Orbitron",size : "30px"});
+var background = new GameImage("./res/background.jpg",new vec2(0,0),800,600);
 
 Player.setUp();
 var aster = new asteroid();
@@ -60,21 +58,16 @@ aster3.setSatIndex(aster);
 
 function updateGame(){
     frames++;
-    con.scale(0.5,0.5);
-    con.drawImage(background,0,0,1600,1200);
-    con.scale(2,2);
-    con.font = "30px 'Orbitron'";
-    con.fillStyle = "white";
-    con.fillText("skore: 9999", 300, 50);
+    background.render(con);
     if(forward){
         moveVec.y = 1.0;
     }
     else{
         if(!stopped && moveVec.y > 0){moveVec.y += -0.01; }
         else{stopped = 1; moveVec.y = 0;}
-
+        
     }
-
+    
     Player.move(moveVec,radians);
     aster.move();
     aster2.move();
@@ -88,25 +81,25 @@ function updateGame(){
         OutOfScreenVector.y = -2*Player.getActPosPair(2).y;
         OutofScreen=1;
     }
-
+    
     if(OutofScreen){
         Player.teleport(OutOfScreenVector,radians);
         OutOfScreenVector.x = 0;
         OutOfScreenVector.y = 0;
         OutofScreen = 0;
     }
-
+    
     sat.updateAxis(Player);
     sat.updateAxis(aster);
     sat.updateAxis(aster2);
-
+    
     if(sat.checkForCollision(Player,aster)){
         collided = 1;
         if(Player.direction.x == 0 && Player.direction.y == 0){
             aster.direction = aster.direction.invert();
         }else{
-        aster.direction.x += Player.direction.x*0.1;
-        aster.direction.y += Player.direction.y* 0.1;
+            aster.direction.x += Player.direction.x*0.1;
+            aster.direction.y += Player.direction.y* 0.1;
         }
         aster.move();
     }
@@ -141,15 +134,15 @@ function updateGame(){
             bulletArr.splice(index,1);
         }
         
-        element.draw(con);
+        element.render(con);
         
     });
     
     Player.draw(con);
-    aster.draw(con);
-    //aster2.draw(con);
-    //aster3.draw(con);
-
+    aster.render(con);
+    aster2.render(con);
+    aster3.render(con);
+    skore.render(con);
     Player.shoot = 0;
     // sat.drawAxis(con);
 }

@@ -30,5 +30,24 @@ class vec2{
     unitVector(){
         return new vec2(this.x/this.magnitude(), this.y/this.magnitude());
     }
+
+
+    static convertToPixels(vector){
+        return new vec2((area.width*vector.x+area.width)/2,(-area.height*vector.y+area.height)/2);
+    }
 }
 
+class vec3 extends vec2{ 
+    //used for load order
+
+    constructor(x,y,z){
+        if(x === Object){
+            this.x = x.x;
+            this.y = x.y;
+        }
+        this.z = z || y;
+    }
+    get vector2(){
+        return new vec2(this.x,this.y);
+    }
+}

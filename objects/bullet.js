@@ -1,17 +1,16 @@
-class bullet {
+class bullet extends Shape{
     constructor(){
+        super(undefined,undefined,{fillColor : "red"});
     this.vertecies = [
         0.005, 0.005,
         0.005,-0.005,
         -0.005,-0.005,
         -0.005,0.005
     ]
-    this.color = "red";
-    this.speed = 0.5;
     this.direction = new vec2;
     this.center = new vec2(0,0);
     this.initCenter = new vec2(0,0);
-    this.satIndex= -1;
+    this.speed = 0.01;
 }
 disFromInit(){
     return this.center.getDistancefromP(this.initCenter);
