@@ -1,4 +1,4 @@
-class SAT{
+class SATmanager{
     constructor(){
         this.axis = new Array;
         this.axisColor = new Array;

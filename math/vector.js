@@ -1,6 +1,5 @@
 class vec2{
     constructor(x,y){
-        
         if(x === undefined){
             x = 0.0;
         }
@@ -12,6 +11,15 @@ class vec2{
     }
     invert(){
         return new vec2(-this.x,-this.y);
+    }
+
+    multiply(x){
+        return new vec2(this.x*x,this.y*x);
+    }
+
+    copy(x){
+        this.x = x.x;
+        this.y = x.y;
     }
 
 
@@ -49,5 +57,10 @@ class vec3 extends vec2{
     }
     get vector2(){
         return new vec2(this.x,this.y);
+    }
+
+    set vector2(vector){
+        this.x = vector.x;
+        this.y = vector.y;
     }
 }

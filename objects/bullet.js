@@ -11,6 +11,7 @@ class bullet extends Shape{
     this.center = new vec2(0,0);
     this.initCenter = new vec2(0,0);
     this.speed =0.5;
+    this.bulletRadius = 0.9;
 
     this.type = "bullet";
 }

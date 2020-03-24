@@ -8,3 +8,7 @@
  canvas {
     display: inline;
  }
+
+game-controller{
+   -webkit-user-select: none;
+}
