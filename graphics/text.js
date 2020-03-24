@@ -1,5 +1,5 @@
 class GameText extends _SUPER_OBJECT{
-    constructor(string, vector2 = {x,y}, properties = { font, size, color, align}){
+    constructor(string, vector2 = {x,y}, properties = { font, size, color, align, baseline}){
         super();
         this.type = "text";
         this.text = string;
@@ -8,6 +8,7 @@ class GameText extends _SUPER_OBJECT{
         this.size = properties.size || "10px";
         this.color = properties.color || "white";
         this.align = properties.align || "center";
+        this.baseline = properties.baseline || "middle";
     }   
     set sFont(font){
         this.font = font;
@@ -27,6 +28,7 @@ class GameText extends _SUPER_OBJECT{
             this.size += "px";
         }
         con.textAlign = this.align;
+        con.textBaseline = this.baseline;
         con.font = `${this.size} '${this.font}'`;
         con.fillStyle = this.color;
         var vector = vec2.convertToPixels(this.vec);

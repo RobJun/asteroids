@@ -24,6 +24,9 @@ class Shape extends _SUPER_OBJECT{
         return {x : this.actualPosition[pos*2], y: this.actualPosition[pos*2+1]};
     }
 
+    disFromInit(){
+        return this.center.getDistancefromP(this.initCenter);
+    }
 
     render(context){
         context.beginPath();

@@ -14,9 +14,7 @@ class bullet extends Shape{
 
     this.type = "bullet";
 }
-disFromInit(){
-    return this.center.getDistancefromP(this.initCenter);
-}
+
 
 setUp(initPos, direction) {
     this.actualPosition = this.vertecies.slice();

@@ -24,7 +24,7 @@ class State{
     constructor(objects,renderCallback){
         this.index = -1;
         this.objects = objects; 
-        this.callback = renderCallback;
+        this.callback = renderCallback || State.defaultCallback;
     }
 
     addObjects(objects){
@@ -34,5 +34,12 @@ class State{
 
     render(context){
         this.callback(context,this.objects);
+    }
+
+    static defaultCallback(context,objects){
+       objects.forEach(element => {
+            element.move(new vec2,0);
+           element.render(context);
+        });
     }
 }

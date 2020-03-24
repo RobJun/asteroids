@@ -1,5 +1,8 @@
 class Controller{
-    constructor(maxKeys){
+    constructor(maxKeys, canvas){
         this.keys = new Array(maxKeys);
+        this.mouse = new vec2;
     }
+
+
 }

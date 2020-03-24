@@ -1,5 +1,5 @@
 class asteroid extends Shape{
-    constructor(){
+    constructor(scale){
         super(undefined,undefined,{fillColor : "gray"});
         this.type = "asteroid";
         this.vertecies = [
@@ -54,15 +54,16 @@ class asteroid extends Shape{
         this.weight = 1;
         this.center = new vec2;
         this.speed = 0.001;
+        this.scaleVec = scale || new vec2(1,1);
         
         for(var i = 0; i < this.collisionMap.length;i+=2){
-            var vector = this.scale({x:this.collisionMap[i],y:this.collisionMap[i+1]},new vec2(1,1));
+            var vector = this.scale({x:this.collisionMap[i],y:this.collisionMap[i+1]},this.scaleVec);
             this.collisionMap[i] = vector.x;
             this.collisionMap[i+1] = vector.y;
         }
 
          for(var i = 0; i < this.vertecies.length;i+=2){
-             var vector = this.scale({x:this.vertecies[i],y:this.vertecies[i+1]},new vec2(1,1));
+             var vector = this.scale({x:this.vertecies[i],y:this.vertecies[i+1]},this.scaleVec);
              this.vertecies[i] = vector.x;
              this.vertecies[i+1] = vector.y;
          }
