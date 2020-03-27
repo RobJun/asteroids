@@ -4,6 +4,7 @@ class Controller extends HTMLElement{
         this.keys = new Array(parseInt(1024));
         this.buttons = new Array(3);
         this.mousecoords = new vec2;
+        this.out = false;
         this.mousecoordsOnclick = new vec2;
         this.child = undefined;
         this.size = this.getBoundingClientRect()
@@ -11,13 +12,10 @@ class Controller extends HTMLElement{
         this.onmousemove = this.mousemove;
         this.onmousedown = this.mousedown;
         this.onmouseup = this.mouseup;
-        
         this.onkeydown = this.keydown;
         this.onkeyup = this.keyup;
 
-        this.onblur = function(e){
-            this.focus();
-        }
+        this.onblur = this.pause;
     }
 
     setUp(element) {
@@ -49,6 +47,10 @@ class Controller extends HTMLElement{
         this.keys[e.keyCode]= false;
     }
 
+    pause(e){
+        this.out = true;
+        this.focus();
+    }
 
 
 

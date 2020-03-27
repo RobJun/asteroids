@@ -93,7 +93,21 @@ class asteroid extends Shape{
     }
 
     move(delta){
+        var changedX = true;
+        var changedY = true;
+        if(changedX && (this.center.x < -1||this.center.x >1)){
+            this.direction.x = -this.direction.x;
+            changedX = false;
+        }else if(this.center.x >= -1||this.center.x <= 1) {
+            changedX = true;
+        }
 
+        if(changedY && (this.center.y < -1 ||this.center.y >1)){
+            this.direction.y = -this.direction.y;
+            changedY = false;
+        } else if(this.center.y >= -1||this.center.y <= 1) {
+            changedY = true;
+        }
         var direction = this.direction.multiply(delta);
         for(var i = 0; i < this.collisionMap.length; i+=2){
             var vector = calculateVector({x : this.collisionMap[i],y : this.collisionMap[i+1]},calculateRotationMat(this.rotationSpeed*delta));
@@ -112,12 +126,10 @@ class asteroid extends Shape{
                     this.vertecies[i+1] = copy.y;
          }
 
-         this.center = calculateVector(this.center,calculateTranslate(this.direction));
+         this.center = calculateVector(this.center,calculateTranslate(direction));
     }
 
     setSatIndex(object = {satIndex}){
         this.satIndex = object.satIndex;
     }
-
-
 }
