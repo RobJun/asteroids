@@ -22,7 +22,7 @@ class GameButton extends _SUPER_OBJECT{
         this.body = new Shape(this.pos.vertecies,undefined,this.pos);
         this.text = new GameText(this.textProperties.message,this.textProperties.position,this.textProperties);
     }
-    move(){
+    move(delta){
     };
 
     checkKey(controller){

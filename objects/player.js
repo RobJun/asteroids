@@ -18,8 +18,8 @@ class Player extends Shape{
         this.health = 100;
         this.type = "ship";
 
-        this.speed = 0.02;
-        this.rotSpeed = 0.08;
+        this.speed = 1.5;
+        this.rotSpeed = 10;
         this.rotate = 0;
         this.angle = 0;
         this.playable = true;
@@ -27,26 +27,21 @@ class Player extends Shape{
         this.shoot = false;
         this.shootFrames = -1;
         this.direction = new vec2(0,0);
-        this.resistance = 1;
+        this.resistance = 0.01;
 
+        this.controls = {
+            shoot : false,
+            move : false,
+            rotate : 0
+        }
     }
     checkKey(controller){
+    if(this.playable == true){
+
         if(controller.keys[87]){
-            this.direction.y = 1;
+            this.controls.move = true;
         }else{
-             if(this.direction.y >0){
-                 this.direction.y -= this.speed*this.resistance;
-                 this.resistance+=0.005;
-             }else(
-                this.direction.y = 0
-             )
-        }
-        if(controller.keys[81]){
-            this.shoot = true;
-            this.shootFrames++;
-        }else{
-            this.shoot = false;
-            this.shootFrames=-1;
+            this.controls.move = false;
         }
         if(controller.keys[37]){
             this.rotate = -1;
@@ -55,6 +50,7 @@ class Player extends Shape{
         }else{
             this.rotate = 0;
         }
+    }
 
     }
 
@@ -66,15 +62,22 @@ class Player extends Shape{
         }
     }
 
-    move(){
+    move(delta){
 
-        this.angle += this.rotate* this.rotSpeed;
+        if(this.controls.move){
+            this.direction.y = 1;
+        } else if(this.direction.y >0){
+            this.direction.y -= this.direction.y *this.resistance;
+        }else{
+            this.direction.y = 0;
+        }
+        this.angle += this.rotate* this.rotSpeed * delta;
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
-         dir = dir.multiply(this.speed);
+         dir = dir.multiply(this.speed* delta);
 
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
-            var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(this.rotate* this.rotSpeed));
+            var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(this.rotate* this.rotSpeed* delta));
             this.collisionMap[i] = rotateColMap.x;
             this.collisionMap[i+1] = rotateColMap.y;
         }
@@ -82,10 +85,10 @@ class Player extends Shape{
             diff.x = this.actualPosition[i] - this.vertecies[i]
             diff.y = this.actualPosition[i+1]- this.vertecies[i+1];
 
-            var copy = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(this.rotate* this.rotSpeed));
+            var copy = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(this.rotate* this.rotSpeed* delta));
 
             var vec = calculateVector({x: this.actualPosition[i] ,y: this.actualPosition[i+1]}, calculateTranslate(diff.invert()));
-                vec = calculateVector(vec,calculateTranslate({ x : diff.x+ dir.x, y : diff.y+ dir.y}).multiply(calculateRotationMat(this.rotate* this.rotSpeed)));
+                vec = calculateVector(vec,calculateTranslate({ x : diff.x+ dir.x, y : diff.y+ dir.y}).multiply(calculateRotationMat(this.rotate* this.rotSpeed* delta)));
             this.actualPosition[i] = vec.x  
             this.actualPosition[i+1] = vec.y 
             this.vertecies[i] = copy.x;

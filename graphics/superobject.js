@@ -9,7 +9,7 @@ class _SUPER_OBJECT {
         this.health = 0;
     }
     render(con){}
-    move(){};
+    move(delta){};
     checkKey(controller){}
 
     setSatIndex(object = {satIndex}){

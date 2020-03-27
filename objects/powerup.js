@@ -7,7 +7,7 @@ class PowerUp extends GameImage{
         this.dSpeed = 60;
     }
 
-    move(){
+    move(delta){
         console.log(this.tick);
 
         if(this.tick < this.maxTime && this.tick >= this.maxTime/4 && this.tick %this.dSpeed== 0){

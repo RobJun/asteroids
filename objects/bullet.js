@@ -35,16 +35,14 @@ setUp(initPos, direction) {
         return this;
 
     }
-    move(){
+    move(delta){
         for(var i = 0; i < this.actualPosition.length; i+=2){
             var vec = calculateVector({x : this.actualPosition[i], y : this.actualPosition[i+1]}, calculateTranslate(this.direction));
             this.actualPosition[i] = vec.x;
             this.actualPosition[i+1] = vec.y;
         }
-        var vec = calculateVector(this.center,calculateTranslate(this.direction));
+        var vec = calculateVector(this.center,calculateTranslate(this.direction.multiply(delta)));
             this.center.x = vec.x;
             this.center.y = vec.y;
-
-        
     }
 }

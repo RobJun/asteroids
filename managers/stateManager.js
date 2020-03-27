@@ -5,7 +5,18 @@ class StateManager{
         this.controller = undefined;
         this.tick = 0;
         this.SAT = new SATmanager();
+        this.time = {
+            lastUpdate : Date.now(),
+            delta : 0
+        }
     }
+
+    calculateDelta(){
+        var now = Date.now();
+        this.time.delta = (now - this.time.lastUpdate)/1000;
+        this.time.lastUpdate = now;
+    }
+
 
     set controls(controller){
         this.controller = controller;
@@ -21,8 +32,7 @@ class StateManager{
         ship = this.current.objects.find((element)=> element.type == "ship");
         if(controller.keys[81]){
         this.current.shooting.shootframe++;
-        console.log( this.current.shooting.shootframe);
-        if(this.current.index === 1 && ship != undefined && this.current.shooting.shootframe == 30){
+        if(this.current.index === 1 && ship != undefined && ship.playable == true && this.current.shooting.shootframe == 30){
                 this.current.addObjects(new bullet().setUp(ship.getActPosPair(0),ship.getVertPair(0)))
                 this.current.shooting.shootframe=0;
         }
@@ -30,17 +40,18 @@ class StateManager{
 
     }
         
-        set change(index){
-            this.current = this.states[index];
-        }
-        
-        
-        render(context){
-            this.tick++;
-            this.createObject();
-            this.current.render(context,this.controller);
-        }
+    set change(index){
+        this.current = this.states[index];
     }
+        
+        
+    render(context){
+        this.tick++;
+        this.calculateDelta();
+        this.createObject();
+        this.current.render(context,this.controller,this.time.delta);
+    }
+}
     
     class State{
         constructor(objects,renderCallback){
@@ -56,15 +67,15 @@ class StateManager{
         addObjects(objects){
             this.objects.push(objects);
         }
-        render(context,controller){
-            this.callback(context,this.objects,controller);
+        render(context,controller,delta){
+            this.callback(context,this.objects,controller,delta);
         }
         
 
-    static defaultCallback(context,objects,controller){
+    static defaultCallback(context,objects,controller, delta){
        objects.forEach(element => {
             element.checkKey(controller);
-            element.move();
+            element.move(delta);
             element.render(context);
         });
     }

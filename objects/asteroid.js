@@ -49,11 +49,10 @@ class asteroid extends Shape{
             -0.05,0.025,
             0.0,0.06
         ]
-        this.rotationSpeed = 0.01;
+        this.rotationSpeed = 1;
         this.direction = new vec2;
         this.weight = 1;
         this.center = new vec2;
-        this.speed = 0.001;
         this.scaleVec = scale || new vec2(1,1);
         
         for(var i = 0; i < this.collisionMap.length;i+=2){
@@ -75,13 +74,12 @@ class asteroid extends Shape{
             this.weight = weight;
         }
         if(radians === undefined)
-            this.rotationSpeed *= 0;
+            this.rotationSpeed = 0;
         else {
         this.rotationSpeed *= radians;
         }
         this.actualPosition = this.vertecies.slice();
-        this.direction.x = direction.x * this.speed;
-        this.direction.y = direction.y * this.speed;
+        this.direction = direction;
         for(var i = 0; i < this.actualPosition.length; i+=2){
             var vec = calculateVector({x: this.actualPosition[i], y: this.actualPosition[i+1]},calculateTranslate(initPos));
             this.actualPosition[i] = vec.x;
@@ -94,18 +92,20 @@ class asteroid extends Shape{
         return this;
     }
 
-    move(){
+    move(delta){
+
+        var direction = this.direction.multiply(delta);
         for(var i = 0; i < this.collisionMap.length; i+=2){
-            var vector = calculateVector({x : this.collisionMap[i],y : this.collisionMap[i+1]},calculateRotationMat(this.rotationSpeed));
+            var vector = calculateVector({x : this.collisionMap[i],y : this.collisionMap[i+1]},calculateRotationMat(this.rotationSpeed*delta));
             this.collisionMap[i] = vector.x;
             this.collisionMap[i+1] = vector.y;
          }
          for(var i = 0; i < this.actualPosition.length;i+=2){
-             var copy = calculateVector({x : this.vertecies[i],y : this.vertecies[i+1]},calculateRotationMat(this.rotationSpeed));
+             var copy = calculateVector({x : this.vertecies[i],y : this.vertecies[i+1]},calculateRotationMat(this.rotationSpeed*delta));
              var diff = new vec2(this.actualPosition[i]-this.vertecies[i],this.actualPosition[i+1]-this.vertecies[i+1]);
 
                 var vec = calculateVector({x : this.actualPosition[i], y :this.actualPosition[i+1]},calculateTranslate(diff.invert()));
-                    vec = calculateVector(vec, calculateTranslate({x : diff.x+this.direction.x, y : diff.y+ this.direction.y}).multiply(calculateRotationMat(this.rotationSpeed)));
+                    vec = calculateVector(vec, calculateTranslate({x : diff.x+direction.x, y : diff.y+ direction.y}).multiply(calculateRotationMat(this.rotationSpeed*delta)));
                     this.actualPosition[i] = vec.x;
                     this.actualPosition[i+1] = vec.y;
                     this.vertecies[i] = copy.x;
