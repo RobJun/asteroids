@@ -14,7 +14,7 @@ class Controller extends HTMLElement{
         this.onmouseup = this.mouseup;
         this.onkeydown = this.keydown;
         this.onkeyup = this.keyup;
-
+        this.onfocus = this.focusC;
         this.onblur = this.pause;
     }
 
@@ -50,6 +50,10 @@ class Controller extends HTMLElement{
     pause(e){
         this.out = true;
         this.focus();
+    }
+
+    focusC(e){
+        this.out = false;
     }
 
 
