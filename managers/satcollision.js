@@ -31,10 +31,6 @@ class SATmanager{
             }
             (uniq) ? UniqAxis.push(i) : uniq = 1;
         }    
-        
-     /*   var filtered = Axis.filter((el,index) => {
-            return (UniqAxis.includes(index)) ? true : false;
-        })*/
 
         this.axis.push(Axis.slice());
 
@@ -59,10 +55,17 @@ class SATmanager{
 
 
     }
-    checkForCollision(object1 = {actualPosition, satIndex},object2 = {actualPosition, satIndex},drawAxis,context){
+    checkForCollision(object1 = {actualPosition, satIndex,collided},object2 = {actualPosition, satIndex,collided},drawAxis,context){
         var obj2Max, obj2Min;
         var obj1Max, obj1Min;
         var testedAxis = new Array;
+        if(object1.satIndex === -1 && object2.satIndex === -1){
+            return false;
+        }else if(object1.satIndex === -1){
+            object1.satIndex = object2.satIndex;
+        }else if(object2.satIndex === -1){
+            object2.satIndex = object1.satIndex;
+        }
         testedAxis.push(this.axis[object1.satIndex].slice(),this.axis[object2.satIndex].slice());
         for(var k = 0; k < testedAxis.length;k++){
             for(var j = 0; j < testedAxis[k].length;j++){

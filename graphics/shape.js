@@ -1,5 +1,5 @@
 class Shape extends _SUPER_OBJECT{
-    constructor(vertecies, collisionMap, color = {fillColor, strokeColor, lineWidth}){
+    constructor(vertecies, collisionMap,color){
         super();
 
         this.vertecies = vertecies || [
@@ -10,10 +10,16 @@ class Shape extends _SUPER_OBJECT{
         ]
         this.collisionMap  = collisionMap || this.vertecies;
         this.actualPosition = this.vertecies.slice();
-
-        this.color = color.fillColor || undefined;
-        this.colorS = color.strokeColor || undefined;
-        this.lineWidth = color.lineWidth || undefined;
+        this.center = new vec2;
+        if(color !== undefined){
+            this.color = color.fillColor || undefined;
+            this.colorS = color.strokeColor || undefined;
+            this.lineWidth = color.lineWidth || undefined;
+        }else{
+            this.color =  undefined;
+            this.colorS =  undefined;
+            this.lineWidth =  undefined;
+        }
 
     }
 

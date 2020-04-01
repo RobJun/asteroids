@@ -51,9 +51,12 @@ class asteroid extends Shape{
         ]
         this.rotationSpeed = 1;
         this.direction = new vec2;
-        this.weight = 1;
-        this.center = new vec2;
         this.scaleVec = scale || new vec2(1,1);
+        this.weight = new vec2().dotProd(this.scaleVec);
+        this.out = {
+            inY : true,
+            inX : true
+        }
         
         for(var i = 0; i < this.collisionMap.length;i+=2){
             var vector = this.scale({x:this.collisionMap[i],y:this.collisionMap[i+1]},this.scaleVec);
@@ -85,28 +88,44 @@ class asteroid extends Shape{
             this.actualPosition[i] = vec.x;
             this.actualPosition[i+1] = vec.y;
         }
-
-
         this.center = calculateVector(this.center,calculateTranslate(initPos));
 
         return this;
     }
+    
+    bounce(object2){
+        var line = new vec2(this.center.x - object2.center.x, this.center.y-object2.center.y);
+        var angle = Math.acos(line.dotProd(this.direction)/line.magnitude()*this.direction.magnitude());
+        var Constant = new vec2(this.direction.x+object2.direction.x,this.direction.y+object2.direction.y);
+        Constant.x -= (object2.direction.x - this.direction.x);
+        Constant.y -= (object2.direction.y - this.direction.y);
+        Constant.x/=2;
+        Constant.y /=2;
+        this.direction.x = (object2.direction.x + Constant.x - this.direction.x)*0.9;
+        this.direction.y = (object2.direction.y + Constant.y - this.direction.y)*0.9;
+        object2.direction = Constant;
+    }
 
     move(delta){
-        var changedX = true;
-        var changedY = true;
-        if(changedX && (this.center.x < -1||this.center.x >1)){
+        if(this.collided.happend){
+            if(this.collided.with.type == "asteroid"){
+                this.bounce(this.collided.with);
+                this.collided.with.collided.happend = false;
+            }
+            this.collided.happend = false;
+        }
+        if(this.out.inX && (this.center.x < -1||this.center.x >1)){
             this.direction.x = -this.direction.x;
-            changedX = false;
-        }else if(this.center.x >= -1||this.center.x <= 1) {
-            changedX = true;
+            this.out.inX = false;
+        }else if(this.center.x >= -0.8||this.center.x <= 0.8) {
+            this.out.inX = true;
         }
 
-        if(changedY && (this.center.y < -1 ||this.center.y >1)){
+        if(this.out.inY && (this.center.y < -1 ||this.center.y >1)){
             this.direction.y = -this.direction.y;
-            changedY = false;
-        } else if(this.center.y >= -1||this.center.y <= 1) {
-            changedY = true;
+            this.out.inY = false;
+        } else if(this.center.y >= -0.8||this.center.y <= 0.8) {
+            this.out.inY = true;
         }
         var direction = this.direction.multiply(delta);
         for(var i = 0; i < this.collisionMap.length; i+=2){
@@ -127,9 +146,5 @@ class asteroid extends Shape{
          }
 
          this.center = calculateVector(this.center,calculateTranslate(direction));
-    }
-
-    setSatIndex(object = {satIndex}){
-        this.satIndex = object.satIndex;
     }
 }

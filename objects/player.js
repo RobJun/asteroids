@@ -18,7 +18,7 @@ class Player extends Shape{
         this.health = 100;
         this.type = "ship";
 
-        this.speed = 1.5;
+        this.speed = 0.9;
         this.rotSpeed = 10;
         this.rotate = 0;
         this.angle = 0;
@@ -27,13 +27,18 @@ class Player extends Shape{
         this.shoot = false;
         this.shootFrames = -1;
         this.direction = new vec2(0,0);
-        this.resistance = 0.01;
+        this.resistance = 0.05;
 
         this.controls = {
             shoot : false,
             move : false,
             rotate : 0
         }
+    }
+    destroyed(){
+        if(this.health  <= 0)
+            return 1
+        return 0;  
     }
     checkKey(controller){
     if(this.playable == true){
@@ -63,7 +68,17 @@ class Player extends Shape{
     }
 
     move(delta){
-
+        if(this.collided.happend){
+            if(this.collided.with.type == "asteroid"){
+                this.health -= 100;
+                if(this.destroyed()){
+                    console.log("e");
+                    stateManager.change = 3;
+                    stateManager.restore(1);
+                }
+            }
+            this.collided.happend = false;
+        }
         if(this.controls.move){
             this.direction.y = 1;
         } else if(this.direction.y >0){
@@ -72,8 +87,10 @@ class Player extends Shape{
             this.direction.y = 0;
         }
         this.angle += this.rotate* this.rotSpeed * delta;
+        //var dir = this.direction.multiply(delta);
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
-         dir = dir.multiply(this.speed* delta);
+        dir = dir.multiply(this.speed* delta);
+        //console.log(delta, dir)
 
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
@@ -107,6 +124,7 @@ class Player extends Shape{
             outofscreenVec.x = 0;
             outofscreenVec.y = 0;
         }
+        this.center = this.getActPosPair(2);
 
     }
 }

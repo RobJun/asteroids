@@ -2,6 +2,7 @@ class GameButton extends _SUPER_OBJECT{
     constructor(action, pos = {position,scale,vertecies,fillColor,strokeColor, lineWidth}, text = {position,message,align,font,size, color}){
         super();
         this.action = action || undefined;
+        this.clicked = false;
         this.pos = pos;
         this.textProperties = text;
         this.pos.vertecies = pos.vertecies || [
@@ -29,8 +30,11 @@ class GameButton extends _SUPER_OBJECT{
         if(controller.mousecoords.x > this.pos.vertecies[6] && controller.mousecoords.x < this.pos.vertecies[0] 
             && controller.mousecoords.y > this.pos.vertecies[5] && controller.mousecoords.y < this.pos.vertecies[1] ){
                 this.body.color = '#b30000';
-                if(controller.buttons[0]){
+                if(controller.buttons[0] && this.clicked === false){
                     this.action(this);
+                    this.clicked = true;
+                }else if (!controller.buttons[0]){
+                    this.clicked = false;
                 }
             } else{
                 this.body.color = "red";

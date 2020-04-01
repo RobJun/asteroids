@@ -7,6 +7,10 @@ class _SUPER_OBJECT {
         this.playable = true;
         this.speed = 0.0;
         this.health = 0;
+        this.collided = {
+            with : undefined,
+            happend : false,
+        }
     }
     render(con){}
     move(delta){};
