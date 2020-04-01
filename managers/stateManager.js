@@ -4,12 +4,30 @@ class StateManager{
         this.current = NaN;
         this.controller = undefined;
         this.tick = 0;
+        this.sprite = new Image();
+        this.background = new Image();
         this.time = {
             lastUpdate : Date.now(),
             delta : 0
         }
         this.copies = new Map();
     }
+    
+    async loadImages(){
+        var x = new Promise((resolve,reject)=>{ 
+            this.sprite.src = "./res/sprite.png";
+            console.log("e");
+            this.sprite.onload = ()=> resolve(this.sprite)
+        })
+        
+        var y = new Promise((resolve,reject)=>{ 
+            this.background.src= "./res/background.jpg";    
+            this.background.onload = ()=> resolve(this.background)
+        })
+        return {x,y};
+    }
+
+
 
     calculateDelta(){
         var now = Date.now();

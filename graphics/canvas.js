@@ -2,12 +2,12 @@ class GameArea {
     constructor(id,aspectRatio,width, stateMan){
         this.canvas = document.getElementById(id);
         this.context = this.canvas.getContext("2d");
-        this.aspectRatio = aspectRatio;
-        this.canvas.width = width;
+        this.aspectRatio = aspectRatio || 3/4;
+        this.canvas.width = width || 800;
         this.canvas.height= this.canvas.width*aspectRatio;
         this.stateManager = stateMan;
-        this.time = 0;
         this.game = this;
+        this.limitFrames = 60;
     }
 
     clear(context){
@@ -17,12 +17,14 @@ class GameArea {
     updateView(){
         this.clear(this.context);
         this.stateManager.render(this.context);
+        setTimeout( ()=>{
         requestAnimationFrame(()=>{
             this.updateView();
-        })
+        })},1000/this.limitFrames);
     }
 
-    start(){
+    async start(){
+        this.stateManager.loadImages();
         this.updateView();
     }
 }

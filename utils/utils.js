@@ -1,6 +1,12 @@
 var AREA = {
-    width : 800,
-    height :600
+    aspect: 3/4,
+    width :800,
+    height : undefined,
+
+    setUp : function(){
+        this.height = this.aspect* this.width;
+    }
+
 }
 
 
