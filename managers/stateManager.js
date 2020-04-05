@@ -66,7 +66,7 @@ class StateManager{
             //hra
             new GameState,
             //ovladanie
-            new ControlState,
+            new ControlState(this),
             //game over
             new OverState
         ]

@@ -71,8 +71,6 @@ class PlayerDummy extends Shape{
     
     simKeypress(){
         if(this.tick%60 == 0){
-            this.sim++
-            this.sim = this.sim%this.simulate.length;
             switch(this.simulate[this.sim]){
                 case 0:
                     this.rotate = 0;
@@ -88,6 +86,8 @@ class PlayerDummy extends Shape{
                     this.controls.move = 1;
                     break;
             } 
+            this.sim++
+            this.sim = this.sim%this.simulate.length;
         }
         this.tick++;
     }
@@ -138,7 +138,7 @@ class PlayerDummy extends Shape{
         if(Math.abs(this.getActPosPair(2).x)+0.1>1.3){
             outofscreenVec.x = -2*this.getActPosPair(2).x;
         }
-        if(Math.abs(this.getActPosPair(2).y)+0.1>0.35){
+        if(Math.abs(this.getActPosPair(2).y)>0.35){
             outofscreenVec.y = -2*this.getActPosPair(2).y;
 
         }
