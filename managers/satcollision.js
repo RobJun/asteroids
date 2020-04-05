@@ -158,16 +158,7 @@ class SATmanager{
 
 
     bounceObjects(object1 = {direction,center}, object2 = {direction,center}){
-        var line = new vec2(object1.center.x - object2.center.x, object1.center.y-object2.center.y);
-        var angle = Math.acos(line.dotProd(object1.direction)/line.magnitude()*object1.direction.magnitude());
-        var Constant = new vec2(object1.direction.x+object2.direction.x,object1.direction.y+object2.direction.y);
-        Constant.x -= (object2.direction.x - object1.direction.x);
-        Constant.y -= (object2.direction.y - object1.direction.y);
-        Constant.x/=2;
-        Constant.y /=2;
-        object1.direction.x = (object2.direction.x + Constant.x - object1.direction.x)*0.9;
-        object1.direction.y = (object2.direction.y + Constant.y - object1.direction.y)*0.9;
-        object2.direction = Constant;
+        
 
     }
 }

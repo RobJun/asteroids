@@ -24,7 +24,8 @@ class GameArea {
     }
 
     async start(){
-        this.stateManager.loadImages();
+        await this.stateManager.init();
+        console.log("start");
         this.updateView();
     }
 }

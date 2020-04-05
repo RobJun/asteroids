@@ -3,30 +3,17 @@ class StateManager{
         this.states = new Array();
         this.current = NaN;
         this.controller = undefined;
+        this.resourceMan = new ResourceManager();
         this.tick = 0;
-        this.sprite = new Image();
-        this.background = new Image();
         this.time = {
             lastUpdate : Date.now(),
             delta : 0
         }
         this.copies = new Map();
-    }
-    
-    async loadImages(){
-        var x = new Promise((resolve,reject)=>{ 
-            this.sprite.src = "./res/sprite.png";
-            console.log("e");
-            this.sprite.onload = ()=> resolve(this.sprite)
-        })
-        
-        var y = new Promise((resolve,reject)=>{ 
-            this.background.src= "./res/background.jpg";    
-            this.background.onload = ()=> resolve(this.background)
-        })
-        return {x,y};
-    }
 
+        this.resourceMan.addResource("./res/background.jpg");
+        this.resourceMan.addResource("./res/sprite.png");
+    }
 
 
     calculateDelta(){
@@ -34,6 +21,8 @@ class StateManager{
         this.time.delta = (now - this.time.lastUpdate)/1000;
         this.time.lastUpdate = now;
     }
+
+
 
 
     set controls(controller){
@@ -67,20 +56,29 @@ class StateManager{
         }
         return 0;
     }
+
+
+    async init(){
+        await this.resourceMan.loadImages();
+        var states = [
+            //Hlavne Menu
+            new MenuState,
+            //hra
+            new GameState,
+            //ovladanie
+            new ControlState,
+            //game over
+            new OverState
+        ]
+
+        let t = this;
+        states.forEach(e =>{
+            t.addState = e;
+        })
+        this.saveState = 1;
+        this.change = 0;
+    }
     
-
-    createObject(){
-        var ship;
-        ship = this.current.objects.find((element)=> element.type == "ship");
-        if(controller.keys[81]){
-        this.current.shooting.shootframe++;
-        if(this.current.index === 1 && ship != undefined && ship.playable == true && this.current.shooting.shootframe == 30){
-                this.current.addObjects(new bullet().setUp(ship.getActPosPair(0),ship.getVertPair(0)))
-                this.current.shooting.shootframe=0;
-        }
-    }
-
-    }
         
     set change(index){
         this.current = this.states[index];
@@ -90,7 +88,6 @@ class StateManager{
     render(context){
         this.tick++;
         this.calculateDelta();
-        this.createObject();
         this.current.render(context,this.controller,this.time.delta);
     }
 }

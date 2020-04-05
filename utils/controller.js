@@ -5,7 +5,6 @@ class Controller extends HTMLElement{
         this.buttons = new Array(3);
         this.mousecoords = new vec2;
         this.out = false;
-        this.mousecoordsOnclick = new vec2;
         this.child = undefined;
         this.size = this.getBoundingClientRect()
 
@@ -31,12 +30,9 @@ class Controller extends HTMLElement{
     }
 
     mousedown(e){
-        this.mousecoordsOnclick = convertToCoord(e.x-this.offsetLeft,e.y-this.offsetHeight);
         this.buttons[e.button] = true;
     }
     mouseup(e){
-        console.log(e);
-        this.mousecoordsOnclick = convertToCoord(e.x-this.offsetLeft,e.y-this.offsetHeight);
         this.buttons[e.button] = false;
     }
 
