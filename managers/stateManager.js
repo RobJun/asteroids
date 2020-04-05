@@ -5,6 +5,7 @@ class StateManager{
         this.controller = undefined;
         this.resourceMan = new ResourceManager();
         this.tick = 0;
+        this.sound = true;
         this.time = {
             lastUpdate : Date.now(),
             delta : 0
@@ -62,13 +63,13 @@ class StateManager{
         await this.resourceMan.loadImages();
         var states = [
             //Hlavne Menu
-            new MenuState,
+            new MenuState(this),
             //hra
-            new GameState,
+            new GameState(this),
             //ovladanie
             new ControlState(this),
             //game over
-            new OverState
+            new OverState(this)
         ]
 
         let t = this;

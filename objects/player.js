@@ -18,6 +18,8 @@ class Player extends Shape{
         this.health = 100;
         this.type = "ship";
 
+        this.bounds = new vec2(1.3,1.3);
+
         this.speed = 0.9;
         this.rotSpeed = 10;
         this.rotate = 0;
@@ -67,7 +69,7 @@ class Player extends Shape{
         }
     }
 
-    move(delta){
+    _move(delta){
         if(this.collided.happend){
             if(this.collided.with.type == "asteroid"){
                 this.health -= 100;
@@ -87,10 +89,8 @@ class Player extends Shape{
             this.direction.y = 0;
         }
         this.angle += this.rotate* this.rotSpeed * delta;
-        //var dir = this.direction.multiply(delta);
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
         dir = dir.multiply(this.speed* delta);
-        //console.log(delta, dir)
 
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
@@ -112,10 +112,10 @@ class Player extends Shape{
             this.vertecies[i+1] = copy.y;
         }
         var outofscreenVec = new vec2;
-        if(Math.abs(this.getActPosPair(2).x)+0.1>1.3){
+        if(Math.abs(this.getActPosPair(2).x)+0.1>this.bounds.x){
             outofscreenVec.x = -2*this.getActPosPair(2).x;
         }
-        if(Math.abs(this.getActPosPair(2).y)+0.1>1.3){
+        if(Math.abs(this.getActPosPair(2).y)+0.1> this.bounds.y){
             outofscreenVec.y = -2*this.getActPosPair(2).y;
 
         }
@@ -126,5 +126,9 @@ class Player extends Shape{
         }
         this.center = this.getActPosPair(2);
 
+    }
+
+    move(delta){
+        this._move(delta);
     }
 }
