@@ -23,6 +23,16 @@ class Shape extends _SUPER_OBJECT{
 
     }
 
+    moveShape(transVec,scaleVec){
+        for(var i = 0; i < this.actualPosition.length;i+=2){
+            var vec = calculateVector({x : this.actualPosition[i],y: this.actualPosition[i+1]},calculateTranslate(transVec).multiply(calculateScaleMat(scaleVec)));
+            this.actualPosition[i] = vec.x;
+            this.actualPosition[i+1] = vec.y;
+        }
+        console.log("moved");
+        return this;
+    }
+
     getVertPair(pos){
         return {x : this.vertecies[pos*2], y: this.vertecies[pos*2+1]};
     }

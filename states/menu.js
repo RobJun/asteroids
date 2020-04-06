@@ -12,17 +12,19 @@ class MenuState extends State{
                         {position : new vec2(-0.5,-0.15),scale : new vec2(5,1.5),fillColor : "red",strokeColor : "white", lineWidth : 3},
                         {message : "Controls",font : "Orbitron",size : "20px"}),
         new GameButton((button)=>{
+                        SM.soundMan.mute();
                         if(button.text.text.includes("ON")){
                             state.objects[5].posImg = new vec2(127,512);
-                        button.text.text = "sound OFF"
+                            button.text.text = "sound OFF"
+
                         }else{
                             state.objects[5].posImg = new vec2(0,512);
                             button.text.text = "sound ON"  
                         }
                         },
                         {position : new vec2(-0.5,-0.35),scale : new vec2(5,1.5),fillColor : "red",strokeColor : "white", lineWidth : 3},
-                        {message : "sound ON",font : "Orbitron",size : "20px"}),
-        new GameImage(SM.resourceMan.images.get("sprite"),new vec2(0,512), new vec2(-0.7,-0.35),32,32,120,120),
+                        {message : "sound OFF",font : "Orbitron",size : "20px"}),
+        new GameImage(SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.7,-0.35),32,32,120,120),
         new GameText("ASTEROIDS", new vec2(0,0.7),
                         {font : "Orbitron", size : "100px"})
     ]

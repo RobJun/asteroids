@@ -21,11 +21,31 @@ class ResourceManager{
             }
         })
     }
+    
+    async loadResources(){
+        this.loadSounds();
+        await this.loadImages();
+    }
+
+    loadSounds(){
+        let sounds = this.sounds;
+        this.soundURL.forEach((v,k)=>{
+            sounds.set(k,new Audio(v));
+        })
+    }
+
+    async loadImages(){
+        var promises = new Array();
+        var rM = this;
+        this.imageURL.forEach((v,k)=>{
+            promises.push(rM.loadImage(k))
+        });
+        return Promise.all(promises)
+    }
     async loadImage(key){
         let images = this.images;
         let url = this.imageURL;
         return new Promise((resolve,reject)=>{ 
-            images.set(key,new Image());
             const img = new Image();
 
             img.src = url.get(key);
@@ -35,13 +55,5 @@ class ResourceManager{
             }
             img.onerror = (err) => { reject(err);  }
         })
-    }
-    async loadImages(){
-        var promises = new Array();
-        var rM = this;
-        this.imageURL.forEach((v,k)=>{
-            promises.push(rM.loadImage(k))
-        });
-        return Promise.all(promises)
     }
 }

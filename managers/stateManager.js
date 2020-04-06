@@ -4,6 +4,7 @@ class StateManager{
         this.current = NaN;
         this.controller = undefined;
         this.resourceMan = new ResourceManager();
+        this.soundMan = new SoundManager();
         this.tick = 0;
         this.sound = true;
         this.time = {
@@ -14,6 +15,8 @@ class StateManager{
 
         this.resourceMan.addResource("./res/background.jpg");
         this.resourceMan.addResource("./res/sprite.png");
+        this.resourceMan.addResource("./res/sounds/mainTitle.mp3");
+
     }
 
 
@@ -60,7 +63,8 @@ class StateManager{
 
 
     async init(){
-        await this.resourceMan.loadImages();
+        await this.resourceMan.loadResources();
+        this.soundMan.soundMap = this.resourceMan.sounds;
         var states = [
             //Hlavne Menu
             new MenuState(this),
@@ -71,7 +75,8 @@ class StateManager{
             //game over
             new OverState(this)
         ]
-
+        this.soundMan.soundProperties("mainTitle",{loop : true})
+        this.soundMan.playAsync("mainTitle");
         let t = this;
         states.forEach(e =>{
             t.addState = e;
