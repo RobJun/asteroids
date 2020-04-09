@@ -1,6 +1,6 @@
 class Shape extends _SUPER_OBJECT{
-    constructor(vertecies, collisionMap,color){
-        super();
+    constructor(parent,vertecies, collisionMap,color){
+        super(parent);
 
         this.vertecies = vertecies || [
             0.005, 0.005,
@@ -21,6 +21,13 @@ class Shape extends _SUPER_OBJECT{
             this.lineWidth =  undefined;
         }
 
+    }
+
+    
+    destroyed(){
+        if(this.health  <= 0)
+            return 1
+        return 0;  
     }
 
     moveShape(transVec,scaleVec){

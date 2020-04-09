@@ -109,10 +109,6 @@ class SATmanager{
         return true;
     }
 
-    deleteAxis(object = {satIndex}){
-
-    }
-
     drawAxis(context){
         this.draw = 1;
         this.axis.forEach(el =>{

@@ -1,6 +1,6 @@
 class bullet extends Shape{
-    constructor(){
-        super(undefined,undefined,{fillColor : "red"});
+    constructor(parent){
+        super(parent,undefined,undefined,{fillColor : "red"});
     this.vertecies = [
         0.005, 0.005,
         0.005,-0.005,

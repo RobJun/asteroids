@@ -1,7 +1,7 @@
 
 class Player extends Shape{
-    constructor(){
-        super(undefined, undefined,{ strokeColor : "green" ,lineWidth : 3});
+    constructor(parent){
+        super(parent,undefined, undefined,{ strokeColor : "green" ,lineWidth : 3});
         this.vertecies = [
             0.0, 0.05,
             0.03,-0.03,
@@ -22,8 +22,9 @@ class Player extends Shape{
 
         this.speed = 0.9;
         this.rotSpeed = 10;
-        this.rotate = 0;
+
         this.angle = 0;
+
         this.playable = true;
         this.teleported = false;
         this.shoot = false;
@@ -34,29 +35,23 @@ class Player extends Shape{
         this.controls = {
             shoot : false,
             move : false,
-            rotate : 0
+            rotate : 0,
+            invincible: 0
         }
     }
-    destroyed(){
-        if(this.health  <= 0)
-            return 1
-        return 0;  
-    }
+
     checkKey(controller){
     if(this.playable == true){
-
-        if(controller.keys[87]){
-            this.controls.move = true;
-        }else{
-            this.controls.move = false;
-        }
         if(controller.keys[37]){
-            this.rotate = -1;
+            this.controls.rotate = -1;
         }else if(controller.keys[39]){
-            this.rotate = 1;
+            this.controls.rotate = 1;
         }else{
-            this.rotate = 0;
+            this.controls.rotate = 0;
         }
+
+        this.controls.move = controller.keys[87];
+        this.controls.shoot = controller.keys[81];
     }
 
     }
@@ -71,30 +66,36 @@ class Player extends Shape{
 
     _move(delta){
         if(this.collided.happend){
-            if(this.collided.with.type == "asteroid"){
-                this.health -= 100;
+            if(this.collided.with.type == "asteroid" && this.controls.invincible == 0){
+                this.health -=this.collided.with.damage;
+                this.controls.invincible = 60;
+                this.notify(`damaged=${this.collided.with.damage}`,this);
                 if(this.destroyed()){
-                    console.log("e");
-                    stateManager.change = 3;
-                    stateManager.restore(1);
+                    this.notify("destroyed",this);
                 }
+                this.collided.happend = false;
             }
-            this.collided.happend = false;
+        }
+
+        if(this.controls.invincible > 0){
+            this.controls.invincible--
         }
         if(this.controls.move){
             this.direction.y = 1;
+            this.direction.x = 0;
         } else if(this.direction.y >0){
             this.direction.y -= this.direction.y *this.resistance;
         }else{
             this.direction.y = 0;
         }
-        this.angle += this.rotate* this.rotSpeed * delta;
+
+        var rot = this.controls.rotate* this.rotSpeed * delta;
+        this.angle +=rot;
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
         dir = dir.multiply(this.speed* delta);
-
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
-            var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(this.rotate* this.rotSpeed* delta));
+            var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(rot));
             this.collisionMap[i] = rotateColMap.x;
             this.collisionMap[i+1] = rotateColMap.y;
         }
@@ -102,10 +103,10 @@ class Player extends Shape{
             diff.x = this.actualPosition[i] - this.vertecies[i]
             diff.y = this.actualPosition[i+1]- this.vertecies[i+1];
 
-            var copy = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(this.rotate* this.rotSpeed* delta));
+            var copy = calculateVector({x : this.vertecies[i], y : this.vertecies[i+1]},calculateRotationMat(rot));
 
             var vec = calculateVector({x: this.actualPosition[i] ,y: this.actualPosition[i+1]}, calculateTranslate(diff.invert()));
-                vec = calculateVector(vec,calculateTranslate({ x : diff.x+ dir.x, y : diff.y+ dir.y}).multiply(calculateRotationMat(this.rotate* this.rotSpeed* delta)));
+                vec = calculateVector(vec,calculateTranslate({ x : diff.x+ dir.x, y : diff.y+ dir.y}).multiply(calculateRotationMat(rot)));
             this.actualPosition[i] = vec.x  
             this.actualPosition[i+1] = vec.y 
             this.vertecies[i] = copy.x;

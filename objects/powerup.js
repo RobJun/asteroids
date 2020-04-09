@@ -1,6 +1,6 @@
 class PowerUp extends GameImage{
-    constructor(url,posVec,width,height){
-        super(url,posVec,width,height);
+    constructor(parent,key,posSprite,posCenter, width,height,spritewidth,spriteheight,animate,onTicks){
+        super(parent,key,posSprite,posCenter, width,height,spritewidth,spriteheight,animate,onTicks);
         this.tick = 0;
         this.maxTime = 800;
         this.startDis = this.maxTime/2;

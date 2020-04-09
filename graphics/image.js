@@ -1,6 +1,6 @@
 class GameImage extends _SUPER_OBJECT{
-    constructor(key,posSprite,posCenter, width,height,spritewidth,spriteheight,animate,onTicks){
-        super();
+    constructor(parent,key,posSprite,posCenter, width,height,spritewidth,spriteheight,animate,onTicks){
+        super(parent);
         this.tick = 1;
 
         this.onTicks = onTicks || [60];

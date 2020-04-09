@@ -14,7 +14,7 @@ class ResourceManager{
             var split = e.replace(/(.{1,}\/(.*)\/)|(http.)|(\.\/)/g,"").split(".");
             if(/(jpg)|(png)|(gif)/i.test(split[split.length - 1])){
                 images.set(split[0],e);
-            }else if(/(mp3)/i.test(split[split.length - 1])){
+            }else if(/(mp3)|(wav)/i.test(split[split.length - 1])){
                 sounds.set(split[0],e);
             }else{
                 console.log(split[split.length - 1] + " not supported format");

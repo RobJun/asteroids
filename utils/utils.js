@@ -18,3 +18,13 @@ function convertToPixels(x,y){
     return new vec2((AREA.width*x+AREA.width)/2,(-AREA.height*y+AREA.height)/2);
 }
 
+
+async function wait(statement){
+    var pro = resolve=>{
+        if(statement()) {resolve()}
+        else setTimeout(() => pro(resolve), 500);
+    }
+    return new Promise(pro);
+}
+
+

@@ -1,6 +1,6 @@
 class asteroid extends Shape{
-    constructor(scale){
-        super(undefined,undefined,{fillColor : "gray"});
+    constructor(parent,scale){
+        super(parent,undefined,undefined,{fillColor : "gray"});
         this.type = "asteroid";
         this.vertecies = [
             0.07,0.05,
@@ -49,6 +49,8 @@ class asteroid extends Shape{
             -0.05,0.025,
             0.0,0.06
         ]
+        this.health = 100;
+        this.damage = 20;
         this.rotationSpeed = 1;
         this.direction = new vec2;
         this.scaleVec = scale || new vec2(1,1);
@@ -107,10 +109,18 @@ class asteroid extends Shape{
     }
 
     move(delta){
+
         if(this.collided.happend){
             if(this.collided.with.type == "asteroid"){
                 this.bounce(this.collided.with);
                 this.collided.with.collided.happend = false;
+                this.health-=10;
+                if(this.destroyed()){
+                    this.notify("destroyed",this);
+                }
+            }
+            if(this.collided.with.type == "ship"){
+                this.bounce(this.collided.with);
             }
             this.collided.happend = false;
         }

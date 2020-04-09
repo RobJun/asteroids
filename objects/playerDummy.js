@@ -1,7 +1,7 @@
 
 class PlayerDummy extends Player{
-    constructor(position, simulate){
-        super()
+    constructor(parent,position, simulate){
+        super(parent)
         this.tick = 1;
         this.sim = 0;
         this.pos = position || new vec2(0,0);

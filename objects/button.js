@@ -1,6 +1,6 @@
 class GameButton extends _SUPER_OBJECT{
-    constructor(action, pos = {position,scale,vertecies,fillColor,strokeColor, lineWidth}, text = {position,message,align,font,size, color}){
-        super();
+    constructor(parent,action, pos = {position,scale,vertecies,fillColor,strokeColor, lineWidth}, text = {position,message,align,font,size, color}){
+        super(parent);
         this.action = action || undefined;
         this.clicked = false;
         this.pos = pos;
@@ -20,8 +20,8 @@ class GameButton extends _SUPER_OBJECT{
             this.pos.vertecies[i+1] = scale.y + this.pos.position.y;
         }
         this.textProperties.position = text.position || this.pos.position; 
-        this.body = new Shape(this.pos.vertecies,undefined,this.pos);
-        this.text = new GameText(this.textProperties.message,this.textProperties.position,this.textProperties);
+        this.body = new Shape(this.parent,this.pos.vertecies,undefined,this.pos);
+        this.text = new GameText(this.parent,this.textProperties.message,this.textProperties.position,this.textProperties);
     }
     move(delta){
     };
