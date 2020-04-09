@@ -36,8 +36,12 @@ class Shape extends _SUPER_OBJECT{
             this.actualPosition[i] = vec.x;
             this.actualPosition[i+1] = vec.y;
         }
-        console.log("moved");
         return this;
+    }
+
+    
+    setCollision(sat){
+        sat.addSprite(this);
     }
 
     getVertPair(pos){

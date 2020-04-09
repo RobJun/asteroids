@@ -4,7 +4,7 @@ class vec2{
             x = 0.0;
         }
         if(y === undefined){
-            y =0.0;
+            y = x;
         }
         this.x = x;
         this.y = y;

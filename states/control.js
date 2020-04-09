@@ -4,11 +4,11 @@ class ControlState extends State{
         super(SM);
         var state = this;
         this.objects = [
-            new GameImage(state,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),AREA.width,AREA.height),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,0),new vec2(-0.6,0.10),64,64,128,128,true,[120,60]),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,128),new vec2(-0.6,-0.10),64,64,128,128,true,[60,120]),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,256),new vec2(-0.2,0),64,64,128,128,true),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,384),new vec2(0.2,0),64,64,128,128,true),
+            new GameImage(state,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),new vec2(AREA.width,AREA.height),new vec2(800,600)),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,0),new vec2(-0.6,0.10),new vec2(AREA.image),new vec2(128),true,[120,60]),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,128),new vec2(-0.6,-0.10),new vec2(AREA.image),new vec2(128),true,[60,120]),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,256),new vec2(-0.2,0),new vec2(AREA.image),new vec2(128),128,128,true),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,384),new vec2(0.2,0),new vec2(AREA.image),new vec2(128),true),
             new PlayerDummy(state,new vec2(-0.4,0),[1,2]),
             new PlayerDummy(state,new vec2(0,-0.15),[3,0]),
             new PlayerDummy(state,new vec2(0.4,-0.15),[4,0]),
@@ -18,5 +18,7 @@ class ControlState extends State{
                             {message : "Back to menu",font : "Orbitron",size : "20px"}),
 
         ]
+
+        this.setIndexes()
     }
 }

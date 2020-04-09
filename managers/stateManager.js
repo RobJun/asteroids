@@ -6,12 +6,10 @@ class StateManager{
         this.resourceMan = new ResourceManager();
         this.soundMan = new SoundManager();
         this.tick = 0;
-        this.sound = true;
         this.time = {
             lastUpdate : Date.now(),
             delta : 0
         }
-        this.copies = new Map();
 
         this.resourceMan.addResource("./res/background.jpg");
         this.resourceMan.addResource("./res/sprite.png");
@@ -27,9 +25,6 @@ class StateManager{
         this.time.delta = (now - this.time.lastUpdate)/1000;
         this.time.lastUpdate = now;
     }
-
-
-
 
     set controls(controller){
         this.controller = controller;
@@ -47,7 +42,6 @@ class StateManager{
             this.states.splice(index,1,new GameState(t));
         }
     }
-
 
     async init(){
         await this.resourceMan.loadResources();
@@ -75,8 +69,7 @@ class StateManager{
     set change(index){
         this.current = this.states[index];
     }
-        
-        
+               
     render(context){
         this.tick++;
         this.calculateDelta();

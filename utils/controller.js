@@ -1,4 +1,4 @@
-class Controller extends HTMLElement{
+ class Controller extends HTMLElement{
     constructor(){
         super();
         this.keys = new Array(parseInt(1024));
@@ -24,6 +24,7 @@ class Controller extends HTMLElement{
         this.child = element;
         this.focus();
     }
+    
     mousemove(e){
         e.preventDefault();
         this.mousecoords = convertToCoord(e.x-this.offsetLeft,e.y-this.offsetHeight)

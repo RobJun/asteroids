@@ -96,28 +96,22 @@ class asteroid extends Shape{
     }
     
     bounce(object2){
-        var line = new vec2(this.center.x - object2.center.x, this.center.y-object2.center.y);
-        var angle = Math.acos(line.dotProd(this.direction)/line.magnitude()*this.direction.magnitude());
         var Constant = new vec2(this.direction.x+object2.direction.x,this.direction.y+object2.direction.y);
         Constant.x -= (object2.direction.x - this.direction.x);
         Constant.y -= (object2.direction.y - this.direction.y);
         Constant.x/=2;
         Constant.y /=2;
-        this.direction.x = (object2.direction.x + Constant.x - this.direction.x)*0.9;
-        this.direction.y = (object2.direction.y + Constant.y - this.direction.y)*0.9;
-        object2.direction = Constant;
+        this.direction.x = (object2.direction.x + Constant.x - this.direction.x);
+        this.direction.y = (object2.direction.y + Constant.y - this.direction.y);
+        object2.direction = Constant.multiply(0.9);
     }
 
     move(delta){
 
         if(this.collided.happend){
             if(this.collided.with.type == "asteroid"){
-                this.bounce(this.collided.with);
                 this.collided.with.collided.happend = false;
-                this.health-=10;
-                if(this.destroyed()){
-                    this.notify("destroyed",this);
-                }
+                this.bounce(this.collided.with);
             }
             if(this.collided.with.type == "ship"){
                 this.bounce(this.collided.with);

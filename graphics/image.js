@@ -1,5 +1,5 @@
 class GameImage extends _SUPER_OBJECT{
-    constructor(parent,key,posSprite,posCenter, width,height,spritewidth,spriteheight,animate,onTicks){
+    constructor(parent,key,posSprite,posCenter, proportions,sprite,animate,onTicks){
         super(parent);
         this.tick = 1;
 
@@ -12,11 +12,11 @@ class GameImage extends _SUPER_OBJECT{
         this.posImg = posSprite; 
 
         this.position = posCenter;
-        this.radius = width || 128;
-        this.width = width  || 800;
-        this.height = height || width;
-        this.spritewidth = spritewidth || this.width;
-        this.spriteheight = spriteheight || this.height;
+        this.radius = proportions.x;
+        this.width = proportions.x;
+        this.height = proportions.y;
+        this.spritewidth = sprite.x;
+        this.spriteheight = sprite.y;
 
     }
 

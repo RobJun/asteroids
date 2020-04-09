@@ -1,7 +1,7 @@
 class _SUPER_OBJECT {
     constructor(parent){
         this.parent = parent;
-        this.index = undefined;
+        this.index = new Array;
         this.type = "blank";
         this.satIndex = -1;
         this.updateAxis = false;
@@ -17,6 +17,8 @@ class _SUPER_OBJECT {
     render(con){}
     move(delta){};
     checkKey(controller){}
+
+    
 
     notify(message, object){
         this.parent.notify(message,object);

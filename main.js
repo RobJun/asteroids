@@ -6,4 +6,3 @@ var controller = document.createElement('game-controller');
 controller.setUp(area);
 stateManager.controls = controller;
 area.start();
-

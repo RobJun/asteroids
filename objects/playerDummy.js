@@ -11,11 +11,7 @@ class PlayerDummy extends Player{
         this.speed = 0.5;
         this.rotSpeed = 2;
         this.playable = false;
-        this.controls = {
-            shoot : false,
-            move : false,
-            rotate : 0
-        }
+
 
         for(var i = 0; i < this.actualPosition.length;i+=2){
             this.actualPosition[i] += this.pos.x;
@@ -29,14 +25,14 @@ class PlayerDummy extends Player{
         if(this.tick%60 == 0){
             switch(this.simulate[this.sim]){
                 case 0:
-                    this.rotate = 0;
+                    this.controls.rotate = 0;
                     this.controls.move = false;
                     break;
                 case 1:
-                    this.rotate = 1;
+                    this.controls.rotate = 1;
                     break;
                 case 2:
-                    this.rotate = -1;
+                    this.controls.rotate = -1;
                     break;
                 case 3:
                     this.controls.move = 1;

@@ -8,8 +8,6 @@ class SoundManager {
         for(var k in properties) this.sounds.get(sound)[k]=properties[k];
     }
 
-
-
     set soundMap(map){
         this.sounds = map; 
     }
@@ -19,7 +17,6 @@ class SoundManager {
             this.sounds.get(sound).play();
         }
     } 
-
 
     async playAsync(sound){
         await wait(_ => stateManager.soundMan.muted === false)
@@ -32,9 +29,6 @@ class SoundManager {
         this.sounds.get(sound).pause();
         this.playAsync(sound);
     }
-
-    
-    
 
     mute(){
         this.muted = !this.muted;

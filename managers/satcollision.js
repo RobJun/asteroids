@@ -150,11 +150,4 @@ class SATmanager{
             context.stroke();
             }
     }
-
-
-
-    bounceObjects(object1 = {direction,center}, object2 = {direction,center}){
-        
-
-    }
 }

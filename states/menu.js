@@ -3,7 +3,7 @@ class MenuState extends State{
         super(SM);
         var state = this;
         this.objects =  [
-        new GameImage(this,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),AREA.width,AREA.height),
+        new GameImage(this,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),new vec2(AREA.width,AREA.height),new vec2(800,600)),
         new asteroid(this,new vec2(5,5)).setUp(new vec2(0.3,0),new vec2(0,0),0.1,0),
         new GameButton(this,
                         ()=>{SM.change = 1},
@@ -25,11 +25,11 @@ class MenuState extends State{
                         },
                         {position : new vec2(-0.5,-0.35),scale : new vec2(5,1.5),fillColor : "red",strokeColor : "white", lineWidth : 3},
                         {message : "sound OFF",font : "Orbitron",size : "20px"}),
-        new GameImage(this,SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.7,-0.35),32,32,120,120),
+        new GameImage(this,SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.7,-0.35),new vec2(AREA.image/2),new vec2(120)),
         new GameText(this,"ASTEROIDS", new vec2(0,0.7),
                         {font : "Orbitron", size : "100px"})
     ]
     this.setIndexes();
-    
+
     }
 }

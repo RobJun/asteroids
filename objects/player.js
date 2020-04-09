@@ -22,15 +22,19 @@ class Player extends Shape{
 
         this.speed = 0.9;
         this.rotSpeed = 10;
-
         this.angle = 0;
 
         this.playable = true;
         this.teleported = false;
-        this.shoot = false;
-        this.shootFrames = -1;
         this.direction = new vec2(0,0);
         this.resistance = 0.05;
+
+        this.add = 0;
+        this.stats = {
+            score : 0,
+            acc :  0,
+            destroyed : 0
+        }
 
         this.controls = {
             shoot : false,
@@ -73,8 +77,8 @@ class Player extends Shape{
                 if(this.destroyed()){
                     this.notify("destroyed",this);
                 }
-                this.collided.happend = false;
             }
+            this.collided.happend = false;
         }
 
         if(this.controls.invincible > 0){
@@ -130,6 +134,12 @@ class Player extends Shape{
     }
 
     move(delta){
+        if(this.add >= 1 ){
+            this.stats.score++;
+            this.add = 0;
+            this.notify("scoreUpdate",this);
+        }
+        this.add+= delta;
         this._move(delta);
     }
 }
