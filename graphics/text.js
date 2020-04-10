@@ -5,7 +5,7 @@ class GameText extends _SUPER_OBJECT{
         this.text = string;
         this.vec = vector2;
         this.font = properties.font || "Arial";
-        this.size = properties.size || "10px";
+        this.size = getFontSize(properties.size);
         this.color = properties.color || "white";
         this.align = properties.align || "center";
         this.baseline = properties.baseline || "middle";

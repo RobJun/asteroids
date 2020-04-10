@@ -7,6 +7,7 @@ class State{
         this.callback = renderCallback || State.defaultCallback;
 
         this.score = 0;
+        this.collision = true;
     }
 
 
@@ -29,14 +30,14 @@ class State{
         this.objects.push(objects);
     }
     render(context,controller,delta){
-        this.callback(context,this.objects,controller,delta, this.SAT);
+        this.callback(context,this.objects,controller,delta, this.SAT, this.collision);
     }
 
     notify(message, object){
         var m = message.split("=");
         if(m[0] === "damaged"){
-           this.SM.soundMan.play = "damageShip"; 
-           this.objects[5].objects[0].updateSize(new vec2(parseInt(m[1],0)));
+           this.SM.soundMan.play = "damageShip";
+           this.objects[5].objects[0].updateSize(new vec2(-parseInt(m[1]),0));
         } else if(m[0] === "destroyed"){
             this.SM.soundMan.play = "explosion";
             
@@ -48,7 +49,7 @@ class State{
             var index = object.index[i];
             var type = object.type;
             var center = object.center;
-            arr.objects.splice(index,1, new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,768),center,64,64,128,128,false));
+            arr.objects.splice(index,1, new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,768),center,new vec2(AREA.image),new vec2(128),false));
             setTimeout((state)=>{
                 arr.splice(index,1);
             },2000,this);
@@ -66,19 +67,52 @@ class State{
                 },2000,this.SM);
             }
         }else if(m[0] === "create"){
+                if(m[1] === "asteroid"){
+                    var t = this;
+                    var scale = undefined;
+                    if(m.includes("scale")){
+                        scale = m[m.indexOf("scale")+1];
+                    }
+                    var pos = Math.floor(Math.random()*2);
+                    var pos2 = Math.random() * 3 -1;
+                    var vector, dir;
+                    if(pos == 0) pos-=1;
+                    var dirO = -Math.random()*pos;
+                    var dir1 = (Math.random()*3) -1;
+                    if(Math.floor(Math.random()*2) == 0){
+                        dir = new vec2(dirO, dir1)
+                        vector = new vec2(pos,pos2);
+                    }else{
+                        vector = new vec2(pos2,pos);
+                        dir = new vec2(dir1,dirO);
+                    }
+                    dir = dir.multiply(1/(Math.random()*10+1));
 
+
+                    var aster = new asteroid(t,new vec2(scale || Math.random()*2+1)).setUp( vector,dir, -0.3);
+                    if(m.includes("collision"))
+                            this.SAT.addSprite(aster);
+                    else
+                        aster.setSatIndex(this.objects[1].objects[this.objects[1].objects.length-1]);
+                    this.objects[1].objects.push(aster);
+
+
+                }else if(m[1] === "bullet"){
+                    
+                }
         }else if(m[0] === "scoreUpdate"){
             this.objects[5].objects[1].updateText = object.stats.score;
         }
     }
     
 
-static defaultCallback(context,objects,controller, delta,sat){
+static defaultCallback(context,objects,controller, delta,sat, collision){
    objects.forEach((element,index) => {
-       if(element.type === "group"){
+       if(element.type === "group" && collision){
                 element.checkWithin(sat);
                 for(var i = index+1; i < objects.length; i++){
-                    element.checkWith(sat,objects[i].objects);
+                    if(objects[i].type === "group")
+                        element.checkWith(sat,objects[i].objects);
                 }
        }
         element.checkKey(controller);

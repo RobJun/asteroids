@@ -1,6 +1,6 @@
 class asteroid extends Shape{
     constructor(parent,scale){
-        super(parent,undefined,undefined,{fillColor : "gray"});
+        super(parent,undefined,undefined,{fillColor : "gray", strokeColor : "gray"});
         this.type = "asteroid";
         this.vertecies = [
             0.07,0.05,
@@ -51,6 +51,7 @@ class asteroid extends Shape{
         ]
         this.health = 100;
         this.damage = 20;
+        this.inView = false;
         this.rotationSpeed = 1;
         this.direction = new vec2;
         this.scaleVec = scale || new vec2(1,1);
@@ -118,18 +119,21 @@ class asteroid extends Shape{
             }
             this.collided.happend = false;
         }
-        if(this.out.inX && (this.center.x < -1||this.center.x >1)){
+        if(this.in && this.out.inX && (this.center.x < -1||this.center.x >1)){
             this.direction.x = -this.direction.x;
             this.out.inX = false;
         }else if(this.center.x >= -0.8||this.center.x <= 0.8) {
             this.out.inX = true;
         }
 
-        if(this.out.inY && (this.center.y < -1 ||this.center.y >1)){
+        if(this.in && this.out.inY && (this.center.y < -1 ||this.center.y >1)){
             this.direction.y = -this.direction.y;
             this.out.inY = false;
         } else if(this.center.y >= -0.8||this.center.y <= 0.8) {
             this.out.inY = true;
+        }
+        if(!this.in && Math.abs(this.center.y) <= 1 && Math.abs(this.center.x) <= 1){
+            this.in = true;
         }
         var direction = this.direction.multiply(delta);
         for(var i = 0; i < this.collisionMap.length; i+=2){

@@ -8,9 +8,11 @@ class Bar extends Shape{
 
     updateSize(vec){
         var small = new vec2(1/this.update.x, 1/this.update.y);
+        console.log(this);
         this.moveShape(new vec2(0,0),small);
-        this.update.x -= vec.x;
-        this.update.y -= vec.y;
+        console.log(this);
+        this.update.x += vec.x;
+        this.update.y += vec.y;
         this.moveShape(new vec2(0,0), this.update);
     }
 }

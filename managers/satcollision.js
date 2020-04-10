@@ -58,6 +58,7 @@ class SATmanager{
     checkForCollision(object1 = {actualPosition, satIndex,collided},object2 = {actualPosition, satIndex,collided},drawAxis,context){
         var obj2Max, obj2Min;
         var obj1Max, obj1Min;
+
         var testedAxis = new Array;
         if(object1.satIndex === -1 && object2.satIndex === -1){
             return false;
