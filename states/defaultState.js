@@ -40,20 +40,26 @@ class State{
            this.objects[5].objects[0].updateSize(new vec2(-parseInt(m[1]),0));
         } else if(m[0] === "destroyed"){
             this.SM.soundMan.play = "explosion";
-            
             let arr = this;
             var i = 0;
             for(; i < object.index.length-1;i++){
                 arr =  arr.objects[object.index[i]];
             }
+            var score = object.score || 0;
             var index = object.index[i];
             var type = object.type;
             var center = object.center;
-            arr.objects.splice(index,1, new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,768),center,new vec2(AREA.image),new vec2(128),false));
+            arr.shiftFrom(index);
+            var count = arr.objects.push(new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,768),center,new vec2(AREA.image),new vec2(128),false));
             setTimeout((state)=>{
-                arr.splice(index,1);
+                arr.objects.splice(count-1,1);
             },2000,this);
-            if(type === "ship"){
+
+
+            if(type === "asteroid"){
+                this.objects[2].objects[0].stats.score+= score;
+                this.notify("scoreUpdate", this.objects[2].objects[0]);
+            } else if(type === "ship"){
                 var score = object.stats.score;
                 var acc = object.stats.acc;
                 var des = object.stats.destroyed;
@@ -67,8 +73,8 @@ class State{
                 },2000,this.SM);
             }
         }else if(m[0] === "create"){
+            var t = this;
                 if(m[1] === "asteroid"){
-                    var t = this;
                     var scale = undefined;
                     if(m.includes("scale")){
                         scale = m[m.indexOf("scale")+1];
@@ -98,10 +104,21 @@ class State{
 
 
                 }else if(m[1] === "bullet"){
+                    this.SM.soundMan.play = "shoot";
+                    var bullet = new Bullet(t).setUp(object.getActPosPair(0),object.getVertPair(0).multiply(50));
+                    bullet.satIndex = 1;
+                    this.objects[3].addObject(bullet);
                     
                 }
         }else if(m[0] === "scoreUpdate"){
             this.objects[5].objects[1].updateText = object.stats.score;
+        }else if(m[0] ==="delete"){
+            let arr = this;
+            var i = 0;
+            for(; i < object.index.length-1;i++){
+                arr =  arr.objects[object.index[i]];
+            }
+            arr.shiftFrom(object.index[i]);
         }
     }
     

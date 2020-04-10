@@ -10,7 +10,6 @@ class ControlState extends State{
             new PlayerDummy(state,new vec2(0,-0.15),[3,0]),
             new PlayerDummy(state,new vec2(0.4,-0.15),[4,0])
         ])
-
         var buttonGroup = new RenderGroup(state,[
             new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,0),new vec2(-0.6,0.10),new vec2(AREA.image),new vec2(128),true,[120,60]),
             new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,128),new vec2(-0.6,-0.10),new vec2(AREA.image),new vec2(128),true,[60,120]),
@@ -21,6 +20,7 @@ class ControlState extends State{
             new GameImage(state,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),new vec2(AREA.width,AREA.height),new vec2(800,600)),
             buttonGroup,
             dummyGroup,
+            new RenderGroup(state),
             new GameText(state,"Controls", new vec2(0.0,0.8), {font : "Orbitron",size : 30}),
             new GameButton(state,()=>{SM.change = 0},
                             {position : new vec2(0,-0.7), scale: new vec2(5,2),fillColor : "red",strokeColor : "white", lineWidth : 3},

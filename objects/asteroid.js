@@ -50,6 +50,7 @@ class asteroid extends Shape{
             0.0,0.06
         ]
         this.health = 100;
+        this.score = 50;
         this.damage = 20;
         this.inView = false;
         this.rotationSpeed = 1;
@@ -114,9 +115,16 @@ class asteroid extends Shape{
                 this.collided.with.collided.happend = false;
                 this.bounce(this.collided.with);
             }
-            if(this.collided.with.type == "ship"){
+            else  if(this.collided.with.type == "ship"){
                 this.bounce(this.collided.with);
+            }else if(this.collided.with.type == "bullet"){
+                this.health-= this.collided.with.damage;
+                this.notify("delete",this.collided.with);
+                if(this.destroyed()){
+                    this.notify("destroyed",this);
+                }
             }
+
             this.collided.happend = false;
         }
         if(this.in && this.out.inX && (this.center.x < -1||this.center.x >1)){

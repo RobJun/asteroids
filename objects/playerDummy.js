@@ -27,6 +27,7 @@ class PlayerDummy extends Player{
                 case 0:
                     this.controls.rotate = 0;
                     this.controls.move = false;
+                    this.controls.shoot = false;
                     break;
                 case 1:
                     this.controls.rotate = 1;
@@ -35,7 +36,10 @@ class PlayerDummy extends Player{
                     this.controls.rotate = -1;
                     break;
                 case 3:
-                    this.controls.move = 1;
+                    this.controls.move = true;
+                    break;
+                case 4:
+                    this.controls.shoot = true;
                     break;
             } 
             this.sim++

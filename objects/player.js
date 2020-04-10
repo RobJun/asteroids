@@ -40,7 +40,8 @@ class Player extends Shape{
             shoot : false,
             move : false,
             rotate : 0,
-            invincible: 0
+            invincible: 0,
+            time : 1
         }
     }
 
@@ -80,6 +81,12 @@ class Player extends Shape{
             }
             this.collided.happend = false;
         }
+
+        if(this.controls.shoot && this.controls.time >= 0.5){
+            this.notify("create=bullet",this);
+            this.controls.time = 0;
+        }
+        this.controls.time+= delta;
 
         if(this.controls.invincible > 0){
             this.controls.invincible--

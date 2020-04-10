@@ -1,4 +1,4 @@
-class bullet extends Shape{
+class Bullet extends Shape{
     constructor(parent){
         super(parent,undefined,undefined,{fillColor : "red"});
     this.vertecies = [
@@ -14,6 +14,12 @@ class bullet extends Shape{
     this.bulletRadius = 0.9;
 
     this.type = "bullet";
+
+    this.damage = 50; 
+
+    this.exists = true;
+
+    this.time = 0;
 }
 
 
@@ -30,14 +36,18 @@ setUp(initPos, direction) {
     this.InitPos = this.actualPosition;
     var vec = calculateVector(this.center,calculateTranslate(initPos));
     this.initCenter.x = this.center.x= vec.x;
-            this.initCenter.y = this.center.y=vec.y;
+    this.initCenter.y = this.center.y=vec.y;
 
         return this;
 
     }
     move(delta){
+        if(this.exists && this.disFromInit() > 0.5){
+            this.exists = false;
+            this.notify("delete",this);
+        }
         for(var i = 0; i < this.actualPosition.length; i+=2){
-            var vec = calculateVector({x : this.actualPosition[i], y : this.actualPosition[i+1]}, calculateTranslate(this.direction));
+            var vec = calculateVector({x : this.actualPosition[i], y : this.actualPosition[i+1]}, calculateTranslate(this.direction.multiply(delta)));
             this.actualPosition[i] = vec.x;
             this.actualPosition[i+1] = vec.y;
         }

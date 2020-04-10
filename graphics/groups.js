@@ -20,21 +20,36 @@ class RenderGroup {
     }
     }
 
-
+    
     set stateI(index){
         this.index.push(index);
-        this.objects.forEach((e,i) => e.index.push(index, i));
+        this.objects.forEach((e,i) => {
+            e.index = new Array()
+            e.index.push(index, i)});
     }
-
-
-
+    
+    addObject(object){
+        object.index = this.index.slice();
+        object.index.push(this.objects.length);
+        this.objects.push(object);
+    }
+    
+    
+    shiftFrom(index){
+            for(var i = index+1; i < this.objects.length; i++){
+                this.objects[i].index[this.objects[i].index.length-1] = i-1;
+            }
+            this.objects.splice(index,1)
+        }
+    
+    
     checkWithin(sat){
         var objects = this.objects;
         this.objects.forEach((element,index) => {
             if("collisionMap" in element){
                  for(var i = index+1; i < objects.length; i++){
                      if("collisionMap" in objects[i]){
-                             if(sat.checkForCollision(element,objects[i])){
+                            if(sat.checkForCollision(element,objects[i])){
                                  element.collided.with = objects[i];
                                  element.collided.happend = true;
                                  objects[i].collided.with = element;

@@ -45,10 +45,10 @@ class Shape extends _SUPER_OBJECT{
     }
 
     getVertPair(pos){
-        return {x : this.vertecies[pos*2], y: this.vertecies[pos*2+1]};
+        return new vec2( this.vertecies[pos*2], this.vertecies[pos*2+1]);
     }
     getActPosPair(pos){
-        return {x : this.actualPosition[pos*2], y: this.actualPosition[pos*2+1]};
+        return new vec2(this.actualPosition[pos*2], this.actualPosition[pos*2+1]);
     }
 
     disFromInit(){
