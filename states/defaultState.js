@@ -37,81 +37,13 @@ class State{
         var m = message.split("=");
         if(m[0] === "damaged"){
            this.SM.soundMan.play = "damageShip";
-           this.objects[5].objects[0].updateSize(new vec2(-parseInt(m[1]),0));
+           this.objects[6].objects[0].updateSize(new vec2(-parseInt(m[1]),0));
         } else if(m[0] === "destroyed"){
-            this.SM.soundMan.play = "explosion";
-            let arr = this;
-            var i = 0;
-            for(; i < object.index.length-1;i++){
-                arr =  arr.objects[object.index[i]];
-            }
-            var score = object.score || 0;
-            var index = object.index[i];
-            var type = object.type;
-            var center = object.center;
-            arr.shiftFrom(index);
-            var count = arr.objects.push(new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,768),center,new vec2(AREA.image),new vec2(128),false));
-            setTimeout((state)=>{
-                arr.objects.splice(count-1,1);
-            },2000,this);
-
-
-            if(type === "asteroid"){
-                this.objects[2].objects[0].stats.score+= score;
-                this.notify("scoreUpdate", this.objects[2].objects[0]);
-            } else if(type === "ship"){
-                var score = object.stats.score;
-                var acc = object.stats.acc;
-                var des = object.stats.destroyed;
-                setTimeout((manager)=>{
-                    manager.change = 3;
-                    manager.current.reason = object.collided.with;
-                    manager.current.objects[6].objects[0].text = `${score}`;
-                    manager.current.objects[6].objects[1].text = `${acc}%`;
-                    manager.current.objects[6].objects[2].text = `${des}`;
-                    manager.restore(1);
-                },2000,this.SM);
-            }
+            this._destroyed(m,object);
         }else if(m[0] === "create"){
-            var t = this;
-                if(m[1] === "asteroid"){
-                    var scale = undefined;
-                    if(m.includes("scale")){
-                        scale = m[m.indexOf("scale")+1];
-                    }
-                    var pos = Math.floor(Math.random()*2);
-                    var pos2 = Math.random() * 3 -1;
-                    var vector, dir;
-                    if(pos == 0) pos-=1;
-                    var dirO = -Math.random()*pos;
-                    var dir1 = (Math.random()*3) -1;
-                    if(Math.floor(Math.random()*2) == 0){
-                        dir = new vec2(dirO, dir1)
-                        vector = new vec2(pos,pos2);
-                    }else{
-                        vector = new vec2(pos2,pos);
-                        dir = new vec2(dir1,dirO);
-                    }
-                    dir = dir.multiply(1/(Math.random()*10+1));
-
-
-                    var aster = new asteroid(t,new vec2(scale || Math.random()*2+1)).setUp( vector,dir, -0.3);
-                    if(m.includes("collision"))
-                            this.SAT.addSprite(aster);
-                    else
-                        aster.setSatIndex(this.objects[1].objects[this.objects[1].objects.length-1]);
-                    this.objects[1].objects.push(aster);
-
-
-                }else if(m[1] === "bullet"){
-                    this.SM.soundMan.play = "shoot";
-                    var bullet = new Bullet(t).setUp(object.getActPosPair(0),object.getVertPair(0).multiply(50));
-                    bullet.satIndex = 1;
-                    this.objects[3].addObject(bullet);
-                    
-                }
+            this._create(m,object);
         }else if(m[0] === "scoreUpdate"){
-            this.objects[5].objects[1].updateText = object.stats.score;
+            this.objects[6].objects[1].updateText = object.stats.score;
         }else if(m[0] ==="delete"){
             let arr = this;
             var i = 0;
@@ -119,6 +51,96 @@ class State{
                 arr =  arr.objects[object.index[i]];
             }
             arr.shiftFrom(object.index[i]);
+        }
+    }
+
+
+    _destroyed(m,object){
+        this.SM.soundMan.play = "explosion";
+        let arr = this;
+        var i = 0;
+        for(; i < object.index.length-1;i++){
+            arr =  arr.objects[object.index[i]];
+        }
+        var score = object.score || 0;
+        var index = object.index[i];
+        var type = object.type;
+        var center = object.center;
+        var scale = object.scaleVec.x;
+        arr.shiftFrom(index);
+        console.log(arr);
+        
+        if(type === "asteroid"){
+            this.objects[2].objects[0].stats.score+= score;
+            if(scale -0.5 > 0.5){
+                this.notify(`create=asteroid=position=${JSON.stringify(center.add(0.1))}=scale=${scale  - 0.5}`)
+                this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}`)
+            }
+            this.notify("scoreUpdate", this.objects[2].objects[0]);
+        } else if(type === "ship"){
+            var score = object.stats.score;
+            var acc = object.stats.acc;
+            var des = object.stats.destroyed;
+            setTimeout((manager)=>{
+                manager.change = 3;
+                manager.current.reason = object.collided.with;
+                manager.current.objects[6].objects[0].text = `${score}`;
+                manager.current.objects[6].objects[1].text = `${acc}%`;
+                manager.current.objects[6].objects[2].text = `${des}`;
+                manager.restore(1);
+            },2000,this.SM);
+        }
+        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,760),center,new vec2(AREA.image*scale),new vec2(128),false));
+                setTimeout((state)=>{
+                        state.objects.shift();
+                    },2000,this.objects[4]);  
+    }
+
+
+    _create(m,object){
+        var t = this;
+        if(m[1] === "asteroid"){
+            var scale = undefined;
+            if(m.includes("scale")){
+                scale = m[m.indexOf("scale")+1];
+            }
+            var posit = undefined;
+            var vector, dir;
+            if(m.includes("position")){
+                posit = JSON.parse(m[m.indexOf("position")+1]);
+                vector = new vec2(posit.x,posit.y);
+                dir = new vec2(((Math.random()*3) -1)/2,((Math.random()*3) -1)/2);
+            }else{
+            var pos = Math.floor(Math.random()*2);
+            var pos2 = Math.random() * 3 -1;
+            if(pos == 0) pos-=1;
+            var dirO = -Math.random()*pos;
+            var dir1 = (Math.random()*3) -1;
+            if(Math.floor(Math.random()*2) == 0){
+                dir = new vec2(dirO, dir1)
+                vector = new vec2(pos,pos2);
+            }else{
+                vector = new vec2(pos2,pos);
+                dir = new vec2(dir1,dirO);
+            }
+            }
+            dir = dir.multiply(1/(Math.random()*10+1));
+
+
+            var aster = new asteroid(t,new vec2(scale || Math.random()*2+1)).setUp( vector,dir, -0.3);
+            if(m.includes("collision"))
+                    this.SAT.addSprite(aster);
+            else
+                aster.setSatIndex(this.objects[1].objects[this.objects[1].objects.length-1]);
+            this.objects[1].addObject(aster);
+
+
+        }else if(m[1] === "bullet"){
+            this.SM.soundMan.play = "shoot";
+            var bullet = new Bullet(t).setUp(object.getActPosPair(0),object.getVertPair(0).multiply(50));
+            bullet.satIndex = 1;
+            this.objects[3].addObject(bullet);
+            
         }
     }
     

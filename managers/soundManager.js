@@ -14,6 +14,7 @@ class SoundManager {
 
     set play(sound){
         if(!this.muted){
+            this.sounds.get(sound).load();
             this.sounds.get(sound).play();
         }
     } 

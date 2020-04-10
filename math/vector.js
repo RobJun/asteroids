@@ -17,6 +17,10 @@ class vec2{
         return new vec2(this.x*x,this.y*x);
     }
 
+    add(x){
+        return new vec2(this.x+x,this.y+x);
+    }
+
     copy(x){
         this.x = x.x;
         this.y = x.y;

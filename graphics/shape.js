@@ -11,6 +11,8 @@ class Shape extends _SUPER_OBJECT{
         this.collisionMap  = collisionMap || this.vertecies;
         this.actualPosition = this.vertecies.slice();
         this.center = new vec2;
+        this.scaleVec = new vec2(1);
+
         if(color !== undefined){
             this.color = color.fillColor || undefined;
             this.colorS = color.strokeColor || undefined;

@@ -11,6 +11,7 @@ class GameState extends State{
 
         var playerGroup = new RenderGroup(state,[new Player(state)])
         var bulletGroup = new RenderGroup(state);
+        var exploded = new RenderGroup(state);
         var powerGroup = new RenderGroup(state);
         var statsGroup = new RenderGroup(state,[
                                         new Bar(state,"health","red", new vec2(0,-0.9),new vec2(100,2)),
@@ -21,6 +22,7 @@ class GameState extends State{
             asterGroup,
             playerGroup,
             bulletGroup,
+            exploded,
             powerGroup,
             statsGroup
              ]

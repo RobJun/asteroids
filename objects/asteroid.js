@@ -50,13 +50,13 @@ class asteroid extends Shape{
             0.0,0.06
         ]
         this.health = 100;
-        this.score = 50;
         this.damage = 20;
         this.inView = false;
         this.rotationSpeed = 1;
         this.direction = new vec2;
-        this.scaleVec = scale || new vec2(1,1);
+        this.scaleVec = scale || new vec2(1);
         this.weight = new vec2().dotProd(this.scaleVec);
+        this.score = 100 * (this.scaleVec.x);
         this.out = {
             inY : true,
             inX : true
