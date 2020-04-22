@@ -3,7 +3,7 @@ class MenuState extends State{
         super(SM);
         var state = this;
 
-        var buttonGroup = new RenderGroup(state,[
+        this.buttonGroup = new RenderGroup(state,[
                                             new GameButton(this, ()=>{SM.change = 1},
                                                     {position : new vec2(-0.5,0.1),scale : new vec2(5,2),fillColor : "red",strokeColor : "white", lineWidth : 3},
                                                     {message : "Play",font : "Orbitron",size :40}),
@@ -12,7 +12,8 @@ class MenuState extends State{
                                                     {message : "Controls",font : "Orbitron",size :20}),
                                             new GameButton(this,(button)=>{
                                                                     SM.soundMan.mute();
-                                                                    if(button.text.text.includes("ON")){
+                                                                    console.log(SM.soundMan.muted)
+                                                                    if(SM.soundMan.muted){
                                                                         state.objects[3].posImg = new vec2(127,512);
                                                                         button.text.text = "sound OFF"
                                                                     }else{
@@ -26,14 +27,14 @@ class MenuState extends State{
 
 
 
-        var asterGroup = new RenderGroup(state,[
+        this.asterGroup = new RenderGroup(state,[
             new asteroid(this,new vec2(5,5)).setUp(new vec2(0.3,0),new vec2(0,0),0.1,0)
         ])
 
         this.objects =  [
         new GameImage(this,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),new vec2(AREA.width,AREA.height),new vec2(800,600)),
-        asterGroup,
-        buttonGroup,
+        this.asterGroup,
+        this.buttonGroup,
         new GameImage(this,SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.7,-0.35),new vec2(AREA.image/2),new vec2(120)),
         new GameText(this,"ASTEROIDS", new vec2(0,0.7),
                         {font : "Orbitron", size : 100 })

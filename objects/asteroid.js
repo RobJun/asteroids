@@ -108,25 +108,22 @@ class asteroid extends Shape{
         object2.direction = Constant.multiply(0.9);
     }
 
-    move(delta){
-
-        if(this.collided.happend){
-            if(this.collided.with.type == "asteroid"){
-                this.collided.with.collided.happend = false;
-                this.bounce(this.collided.with);
-            }
-            else  if(this.collided.with.type == "ship"){
-                this.bounce(this.collided.with);
-            }else if(this.collided.with.type == "bullet"){
-                this.health-= this.collided.with.damage;
-                this.notify("delete",this.collided.with);
-                if(this.destroyed()){
-                    this.notify("destroyed",this);
-                }
-            }
-
-            this.collided.happend = false;
+    onCollision(object){
+        if(object.type == "asteroid"){
+            this.bounce(object);
         }
+        else  if(object.type == "ship"){
+            this.bounce(object);
+        }else if(object.type == "bullet"){
+            this.health-= object.damage;
+            this.notify("delete",object);
+            if(this.destroyed()){
+                this.notify("destroyed",this);
+            }
+        }
+    }
+
+    move(delta){
         if(this.in && this.out.inX && (this.center.x < -1||this.center.x >1)){
             this.direction.x = -this.direction.x;
             this.out.inX = false;
@@ -162,5 +159,7 @@ class asteroid extends Shape{
          }
 
          this.center = calculateVector(this.center,calculateTranslate(direction));
+
+         this.parent.SAT.updateAxis(this);
     }
 }

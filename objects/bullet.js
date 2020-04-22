@@ -18,8 +18,6 @@ class Bullet extends Shape{
     this.damage = 50; 
 
     this.exists = true;
-
-    this.time = 0;
 }
 
 

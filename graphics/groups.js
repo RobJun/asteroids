@@ -20,6 +20,7 @@ class RenderGroup {
     }
     }
 
+
     
     set stateI(index){
         this.index.push(index);
@@ -50,10 +51,7 @@ class RenderGroup {
                  for(var i = index+1; i < objects.length; i++){
                      if("collisionMap" in objects[i]){
                             if(sat.checkForCollision(element,objects[i])){
-                                 element.collided.with = objects[i];
-                                 element.collided.happend = true;
-                                 objects[i].collided.with = element;
-                                 objects[i].collided.happend = true;
+                                 element.onCollision(objects[i]);
                              }
                      }
                  }
@@ -67,10 +65,8 @@ class RenderGroup {
                 group.forEach(e => {
                     if("collisionMap" in e){
                         if(sat.checkForCollision(element,e)){
-                            element.collided.with = e;
-                            element.collided.happend = true;
-                            e.collided.with = element;
-                            e.collided.happend = true;
+                            element.onCollision(e);
+                            e.onCollision(element);
                         }
                     }
                 })

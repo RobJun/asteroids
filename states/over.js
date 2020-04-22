@@ -3,7 +3,7 @@ class OverState extends State {
         super(SM);
         var state = this;
 
-        var statGroup = new RenderGroup(state, [ new GameText(state,"0", new vec2(-0.45, 0.3),{font : "Orbitron", size : 20, color : "black", align : "left"}),
+        this.statGroup = new RenderGroup(state, [ new GameText(state,"0", new vec2(-0.45, 0.3),{font : "Orbitron", size : 20, color : "black", align : "left"}),
                                                  new GameText(state,"100,00%", new vec2(-0.45,0.12), {font : "Orbitron", size : 20, color : "black",align : "left"}),
                                                  new GameText(state,"99999", new vec2(-0.45,-0.05),{font : "Orbitron", size : 20, color : "black",align : "left"})
                                                 ])
@@ -19,7 +19,7 @@ class OverState extends State {
                     {font : "Orbitron", size : 20, align : "right"}),
             new GameText(state,"destroyed:", new vec2(-0.5,-0.05),
                     {font : "Orbitron", size : 20, align : "right"}),
-                statGroup,
+                this.statGroup,
             new GameButton(state,()=>{SM.change = 1},
                     {position : new vec2(-0.5,-0.4), scale: new vec2(5,2),fillColor : "red",strokeColor : "white", lineWidth : 3},
                     {message : "try again",font : "Orbitron",size : 20}),

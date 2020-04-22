@@ -11,12 +11,15 @@ class StateManager{
             delta : 0
         }
 
-        this.resourceMan.addResource("./res/background.jpg");
-        this.resourceMan.addResource("./res/sprite.png");
-        this.resourceMan.addResource("./res/sounds/mainTitle.wav");
-        this.resourceMan.addResource("./res/sounds/explosion.wav");
-        this.resourceMan.addResource("./res/sounds/shoot.wav");
-        this.resourceMan.addResource("./res/sounds/damageShip.mp3");
+        this.pressed = false;
+
+        this.resourceMan.addResource("./res/background.jpg",
+                                     "./res/sprite.png",
+                                     "./res/sounds/mainTitle.wav",
+                                     "./res/sounds/explosion.wav",
+                                     "./res/sounds/shoot.wav",
+                                     "./res/sounds/damageShip.mp3"
+                                      );
     }
 
 
@@ -69,10 +72,15 @@ class StateManager{
     set change(index){
         this.current = this.states[index];
     }
-               
     render(context){
         this.tick++;
         this.calculateDelta();
+        if(this.controller.keys[88] && !this.pressed){
+            this.states[0].objects[2].objects[2].action(this.states[0].objects[2].objects[2]);
+            this.pressed = true;
+        }else if(!this.controller.keys[88]){
+            this.pressed = false;
+        }
         this.current.render(context,this.controller,this.time.delta);
     }
 }

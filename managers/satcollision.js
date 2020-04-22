@@ -127,7 +127,6 @@ class SATmanager{
     }
 
     drawObjectProj(context,object1 = {max, min}, object2 = {max,min}, vector = {x,y}){
-        if(this.draw){
             var vect = new vec2(vector.x*object1.min, vector.y*object1.min);
             var axisV = convertToPixels(vect.x,vect.y);
             context.beginPath();
@@ -149,6 +148,5 @@ class SATmanager{
             context.closePath();
             context.strokeStyle= "green";
             context.stroke();
-            }
     }
 }

@@ -30,10 +30,12 @@ class Player extends Shape{
         this.resistance = 0.05;
 
         this.add = 0;
+        this.set = false;
         this.stats = {
             score : 0,
             acc :  0,
-            destroyed : 0
+            destroyed : 0,
+            multiplier : 1
         }
 
         this.controls = {
@@ -41,7 +43,9 @@ class Player extends Shape{
             move : false,
             rotate : 0,
             invincible: 0,
-            time : 1
+            time : 1,
+            bullet : 1,
+            shield : false,
         }
     }
 
@@ -69,19 +73,24 @@ class Player extends Shape{
         }
     }
 
-    _move(delta){
-        if(this.collided.happend){
-            if(this.collided.with.type == "asteroid" && this.controls.invincible == 0){
-                this.health -=this.collided.with.damage;
-                this.controls.invincible = 60;
-                this.notify(`damaged=${this.collided.with.damage}`,this);
-                if(this.destroyed()){
-                    this.notify("destroyed",this);
-                }
-            }
-            this.collided.happend = false;
-        }
 
+    onCollision(object){
+        if(object.type == "asteroid" && this.controls.invincible == 0){
+            this.health -=object.damage;
+            this.controls.invincible = 60;
+            this.notify(`damaged=${object.damage}`,this);
+            if(this.destroyed()){
+                this.notify("destroyed",this);
+            }
+        } else if(object.type == "powerup"){
+           this.controls.bullet = 3;
+           setTimeout(ship =>{
+                ship.controls.bullet=1;
+           },10000,this)
+        }
+    };
+
+    _move(delta){
         if(this.controls.shoot && this.controls.time >= 0.5){
             this.notify("create=bullet",this);
             this.controls.time = 0;
@@ -145,6 +154,18 @@ class Player extends Shape{
             this.stats.score++;
             this.add = 0;
             this.notify("scoreUpdate",this);
+        }
+        if(this.stats.destroyed == 1 && this.set == false){
+            this.notify("start=5000",this);
+            this.set = true
+        }else if(this.stats.destroyed == 10 && this.set == false){
+            this.notify("start=2500",this)
+            this.set = true
+        }else if(this.stats.destroyed == 30 && this.set == false){
+            this.notify("start=1000",this)
+            this.set = true
+        }else if (!this.stats.destroyed == 1  && !this.stats.destroyed == 10 && !this.stats.destroyed == 30){
+            this.set = false
         }
         this.add+= delta;
         this._move(delta);

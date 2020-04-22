@@ -52,7 +52,4 @@
     focusC(e){
         this.out = false;
     }
-
-
-
 }

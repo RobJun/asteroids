@@ -23,26 +23,26 @@ class ResourceManager{
     }
     
     async loadResources(){
-        this.loadSounds();
-        await this.loadImages();
+        this._loadSounds();
+        await this._loadImages();
     }
 
-    loadSounds(){
+    _loadSounds(){
         let sounds = this.sounds;
         this.soundURL.forEach((v,k)=>{
             sounds.set(k,new Audio(v));
         })
     }
 
-    async loadImages(){
+    async _loadImages(){
         var promises = new Array();
         var rM = this;
         this.imageURL.forEach((v,k)=>{
-            promises.push(rM.loadImage(k))
+            promises.push(rM._loadImage(k))
         });
         return Promise.all(promises)
     }
-    async loadImage(key){
+    async _loadImage(key){
         let images = this.images;
         let url = this.imageURL;
         return new Promise((resolve,reject)=>{ 

@@ -25,6 +25,7 @@ class Shape extends _SUPER_OBJECT{
 
     }
 
+    onCollision(object){};
     
     destroyed(){
         if(this.health  <= 0)

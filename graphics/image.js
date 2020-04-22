@@ -18,8 +18,22 @@ class GameImage extends _SUPER_OBJECT{
         this.spritewidth = sprite.x;
         this.spriteheight = sprite.y;
 
+
+        var radius = this.width / (AREA.width*2);
+        this.actualPosition = [
+            posCenter.x+radius, posCenter.y+radius,
+            posCenter.x+radius, posCenter.y-radius,
+            posCenter.x-radius, posCenter.y-radius,
+            posCenter.x-radius, posCenter.y+radius
+        ]
+        this.collisionMap  = this.actualPosition;
     }
 
+    onCollision(object){};
+
+    setCollision(sat){
+        sat.addSprite(this);
+    }
 
     updateImageLeft(){
         this.posImg.x = (this.posImg.x+this.spritewidth)%this.image.width;

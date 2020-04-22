@@ -5,9 +5,9 @@ class State{
         this.index = -1;
         this.objects = objects; 
         this.callback = renderCallback || State.defaultCallback;
-
-        this.score = 0;
+        this.Reloadtick = 0;
         this.collision = true;
+        this.interval = setInterval(_ => {},99999999999);
     }
 
 
@@ -25,11 +25,21 @@ class State{
             e.stateI = i;
         })
     }
+
+    realoadAxis(){
+        this.SAT.axis = [];
+        this.addCollision();
+    }
     
     addObjects(objects){
         this.objects.push(objects);
     }
     render(context,controller,delta){
+        this.Reloadtick++
+        if(this.Reloadtick === 10000){
+            this.realoadAxis();
+            this.Reloadtick= 0;
+        }
         this.callback(context,this.objects,controller,delta, this.SAT, this.collision);
     }
 
@@ -51,6 +61,9 @@ class State{
                 arr =  arr.objects[object.index[i]];
             }
             arr.shiftFrom(object.index[i]);
+        }else if(m[0] === "start"){
+            clearInterval(this.interval);
+            this.interval = setInterval(spawnAsteroids,parseInt(m[1]),this);
         }
     }
 
@@ -68,13 +81,16 @@ class State{
         var center = object.center;
         var scale = object.scaleVec.x;
         arr.shiftFrom(index);
-        console.log(arr);
-        
         if(type === "asteroid"){
-            this.objects[2].objects[0].stats.score+= score;
+            this.objects[2].objects[0].stats.score+= score* this.objects[2].objects[0].stats.multiplier;
+            this.objects[2].objects[0].stats.destroyed++
             if(scale -0.5 > 0.5){
-                this.notify(`create=asteroid=position=${JSON.stringify(center.add(0.1))}=scale=${scale  - 0.5}`)
-                this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}`)
+                this.notify(`create=asteroid=position=${JSON.stringify(center.add(0.1))}=scale=${scale  - 0.5}=collision`)
+                this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}=collision`)
+            }
+            if(!Math.floor(Math.random()*4)){
+                console.log(1);
+                this.notify("create=powerup");
             }
             this.notify("scoreUpdate", this.objects[2].objects[0]);
         } else if(type === "ship"){
@@ -127,7 +143,7 @@ class State{
             dir = dir.multiply(1/(Math.random()*10+1));
 
 
-            var aster = new asteroid(t,new vec2(scale || Math.random()*2+1)).setUp( vector,dir, -0.3);
+            var aster = new asteroid(t,new vec2(scale || Math.floor(Math.random()*2)+1)).setUp( vector,dir, -0.3);
             if(m.includes("collision"))
                     this.SAT.addSprite(aster);
             else
@@ -137,10 +153,26 @@ class State{
 
         }else if(m[1] === "bullet"){
             this.SM.soundMan.play = "shoot";
-            var bullet = new Bullet(t).setUp(object.getActPosPair(0),object.getVertPair(0).multiply(50));
+            for(var i = 0; i < object.controls.bullet;i++){
+                if(i == 2) i++;
+            var bullet = new Bullet(t).setUp(object.getActPosPair(i),object.getVertPair(0).multiply(50));
             bullet.satIndex = 1;
             this.objects[3].addObject(bullet);
+            }
             
+        }else if(m[1]==="powerup"){
+            var vector = new vec2();
+            if(m.includes("position")){
+                posit = JSON.parse(m[m.indexOf("position")+1]);
+                vector = new vec2(posit.x,posit.y);
+            }else{
+
+                var operatorX = Math.floor(Math.random()*2)-1;
+                var operatorY =  Math.floor(Math.random()*2)-1;
+                vector = new vec2(Math.random()*0.9*operatorX,Math.random()*0.9*operatorY)
+            }
+            var power = new PowerUp(t,this.SM.resourceMan.images.get("sprite"), vector,new vec2(AREA.image));
+            this.objects[5].addObject(power);
         }
     }
     
@@ -157,6 +189,7 @@ static defaultCallback(context,objects,controller, delta,sat, collision){
         element.checkKey(controller);
         element.move(delta);
         element.render(context);
+
     });
 }
 }
