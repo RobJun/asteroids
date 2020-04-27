@@ -31,12 +31,6 @@ class Player extends Shape{
 
         this.add = 0;
         this.set = false;
-        this.stats = {
-            score : 0,
-            acc :  0,
-            destroyed : 0,
-            multiplier : 1
-        }
 
         this.controls = {
             shoot : false,
@@ -45,7 +39,7 @@ class Player extends Shape{
             invincible: 0,
             time : 1,
             bullet : 1,
-            shield : false,
+            shield : false
         }
     }
 
@@ -78,17 +72,31 @@ class Player extends Shape{
         if(object.type == "asteroid" && this.controls.invincible == 0){
             this.health -=object.damage;
             this.controls.invincible = 60;
+            if(!this.controls.shield){
             this.notify(`damaged=${object.damage}`,this);
             if(this.destroyed()){
                 this.notify("destroyed",this);
             }
-        } else if(object.type == "powerup"){
-           this.controls.bullet = 3;
-           setTimeout(ship =>{
-                ship.controls.bullet=1;
-           },10000,this)
         }
-    };
+        } else if(object.type == "powerup"){
+            if(object.item === 0){
+                STATS.multiplier = 2;
+                setTimeout(ship =>{
+                    STATS.multiplier = 1;
+               },10000,this);
+            }else if(object.item === 1){
+                this.controls.shield = true
+                setTimeout(ship =>{
+                    ship.controls.shield = false;
+               },10000,this);
+            } else {
+                this.controls.bullet = 3;
+                setTimeout(ship =>{
+                     ship.controls.bullet=1;
+                },10000,this)
+        }
+    }
+};
 
     _move(delta){
         if(this.controls.shoot && this.controls.time >= 0.5){
@@ -146,25 +154,36 @@ class Player extends Shape{
             outofscreenVec.y = 0;
         }
         this.center = this.getActPosPair(2);
+    }
 
+    _render(context){
+        if(this.controls.shield === true){
+            context.beginPath();
+            var center = this.getActPosPair(2);
+            center = vec2.convertToPixels(center);
+            context.arc(center.x,center.y,30,0,2*Math.PI);
+            context.closePath();
+            context.strokeStyle = "cyan";
+            context.stroke();
+        }
     }
 
     move(delta){
         if(this.add >= 1 ){
-            this.stats.score++;
+            STATS.score += 1* STATS.multiplier;
             this.add = 0;
             this.notify("scoreUpdate",this);
         }
-        if(this.stats.destroyed == 1 && this.set == false){
+        if(STATS.destroyed == 1 && this.set == false){
             this.notify("start=5000",this);
             this.set = true
-        }else if(this.stats.destroyed == 10 && this.set == false){
+        }else if(STATS.destroyed == 10 && this.set == false){
             this.notify("start=2500",this)
             this.set = true
-        }else if(this.stats.destroyed == 30 && this.set == false){
+        }else if(STATS.destroyed == 30 && this.set == false){
             this.notify("start=1000",this)
             this.set = true
-        }else if (!this.stats.destroyed == 1  && !this.stats.destroyed == 10 && !this.stats.destroyed == 30){
+        }else if (!STATS.destroyed == 1  && !STATS.destroyed == 10 && !STATS.destroyed == 30){
             this.set = false
         }
         this.add+= delta;

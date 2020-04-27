@@ -11,12 +11,17 @@ class PowerUp extends GameImage{
         this.startDis = this.maxTime/2;
         this.maxTime = 800;
         this.type="powerup";
-        this.item=pos.x/128 + pos.y/128- 632;
+        if(pos.x/128 === 1){
+            this.item = 1;
+        }else if((pos.y-632)/128 ===1){
+            this.item = 2;
+        }else{
+            this.item=0;
+        }
     }
 
     onCollision(object){
         if(object.type === "ship"){
-            console.log("aaaaa");
             this.notify("delete",this);
         }
     }

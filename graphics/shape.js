@@ -57,7 +57,7 @@ class Shape extends _SUPER_OBJECT{
     disFromInit(){
         return this.center.getDistancefromP(this.initCenter);
     }
-
+    _render(context){};
     render(context){
         context.beginPath();
         var start = convertToPixels(this.actualPosition[0], this.actualPosition[1]);
@@ -77,6 +77,8 @@ class Shape extends _SUPER_OBJECT{
         context.strokeStyle = this.colorS;
         context.stroke();
         }
+
+        this._render(context);
     }
     
     scale(vector, scaleVec){

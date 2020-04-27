@@ -13,6 +13,21 @@ var AREA = {
 }
 
 
+var STATS = {
+    score : 0,
+    multiplier : 1,
+    destroyed : 0,
+    accuracy : 0,
+
+    reset : function(){
+        this.score = 0;
+        this.multiplier =1;
+        this.destroyed = 0;
+        this.accuracy = 0;
+    }
+}
+
+
 function getFontSize(size){
     return `${AREA.width * size/AREA.fontBase}px`;
 }

@@ -15,14 +15,14 @@ class MenuState extends State{
                                                                     console.log(SM.soundMan.muted)
                                                                     if(SM.soundMan.muted){
                                                                         state.objects[3].posImg = new vec2(127,512);
-                                                                        button.text.text = "sound OFF"
+                                                                        button.text.text = "sound OFF [X]";
                                                                     }else{
                                                                         state.objects[3].posImg = new vec2(0,512);
-                                                                        button.text.text = "sound ON"  
+                                                                        button.text.text = "sound ON [X]";  
                                                                     }
                                                                 },
                                                         {position : new vec2(-0.5,-0.35),scale : new vec2(5,1.5),fillColor : "red",strokeColor : "white", lineWidth : 3},
-                                                        {message : "sound OFF",font : "Orbitron",size :  20}),
+                                                        {message : "sound OFF [X]",font : "Orbitron",size :  20}),
                                                 ])
 
 
@@ -35,9 +35,9 @@ class MenuState extends State{
         new GameImage(this,SM.resourceMan.images.get("background"),new vec2(0,0),new vec2(0,0),new vec2(AREA.width,AREA.height),new vec2(800,600)),
         this.asterGroup,
         this.buttonGroup,
-        new GameImage(this,SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.7,-0.35),new vec2(AREA.image/2),new vec2(120)),
+        new GameImage(this,SM.resourceMan.images.get("sprite"),new vec2(127,512), new vec2(-0.8,-0.35),new vec2(AREA.image/2),new vec2(120)),
         new GameText(this,"ASTEROIDS", new vec2(0,0.7),
-                        {font : "Orbitron", size : 100 })
+                        {font : "Orbitron", size : 100})
     ]
     this.addCollision();
     this.setIndexes();

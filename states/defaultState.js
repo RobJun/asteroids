@@ -53,7 +53,7 @@ class State{
         }else if(m[0] === "create"){
             this._create(m,object);
         }else if(m[0] === "scoreUpdate"){
-            this.objects[6].objects[1].updateText = object.stats.score;
+            this.objects[6].objects[1].updateText = STATS.score;
         }else if(m[0] ==="delete"){
             let arr = this;
             var i = 0;
@@ -82,8 +82,8 @@ class State{
         var scale = object.scaleVec.x;
         arr.shiftFrom(index);
         if(type === "asteroid"){
-            this.objects[2].objects[0].stats.score+= score* this.objects[2].objects[0].stats.multiplier;
-            this.objects[2].objects[0].stats.destroyed++
+            STATS.score+= score* STATS.multiplier;
+            STATS.destroyed++
             if(scale -0.5 > 0.5){
                 this.notify(`create=asteroid=position=${JSON.stringify(center.add(0.1))}=scale=${scale  - 0.5}=collision`)
                 this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}=collision`)
@@ -92,18 +92,16 @@ class State{
                 console.log(1);
                 this.notify("create=powerup");
             }
-            this.notify("scoreUpdate", this.objects[2].objects[0]);
+            this.notify("scoreUpdate");
         } else if(type === "ship"){
-            var score = object.stats.score;
-            var acc = object.stats.acc;
-            var des = object.stats.destroyed;
             setTimeout((manager)=>{
                 manager.change = 3;
                 manager.current.reason = object.collided.with;
-                manager.current.objects[6].objects[0].text = `${score}`;
-                manager.current.objects[6].objects[1].text = `${acc}%`;
-                manager.current.objects[6].objects[2].text = `${des}`;
+                manager.current.objects[6].objects[0].text = `${STATS.score}`;
+                manager.current.objects[6].objects[1].text = `${STATS.accuracy}%`;
+                manager.current.objects[6].objects[2].text = `${STATS.destroyed}`;
                 manager.restore(1);
+                
             },2000,this.SM);
         }
         var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,760),center,new vec2(AREA.image*scale),new vec2(128),false));
