@@ -1,5 +1,5 @@
-window.onload = function(){
 var stateManager = new StateManager();
+window.onload = function(){
 customElements.define('game-controller', Controller);
 AREA.setUp();
 var area = new GameArea("area",AREA.aspect,AREA.width,stateManager);

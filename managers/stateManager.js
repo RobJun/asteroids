@@ -62,6 +62,10 @@ class StateManager{
         ]
         this.soundMan.soundProperties("mainTitle",{loop : true})
         this.soundMan.playAsync("mainTitle");
+        this.soundMan.soundProperties("mainTitle",{volume : 0.1});
+        this.soundMan.soundProperties("explosion",{volume : 0.1});
+        this.soundMan.soundProperties("shoot",{volume : 0.1});
+        this.soundMan.soundProperties("damageShip",{volume : 0.1});
         let t = this;
         states.forEach(e =>{
             t.addState = e;

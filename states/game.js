@@ -4,9 +4,9 @@ class GameState extends State{
         var state = this;
 
         this.asterGroup = new RenderGroup(state, [            
-                                        new asteroid(state,new vec2(2,2)).setUp(new vec2(0.5,0.1),new vec2(-0.1,0), -0.3),
-                                        new asteroid(state,new vec2(1,1)).setUp(new vec2(-0.5,0.5),new vec2(0.3,-0.1), 0.5),
-                                        new asteroid(state,new vec2(1,1)).setUp(new vec2(-0.5,-0.5),new vec2(0.3,0.5), -0.9)
+                                        new asteroid(state,new vec2(2,2),0).setUp(new vec2(0.5,0.1),new vec2(-0.1,0), -0.3),
+                                        new asteroid(state,new vec2(1,1),1).setUp(new vec2(-0.5,0.5),new vec2(0.3,-0.1), 0.5),
+                                        new asteroid(state,new vec2(1,),2).setUp(new vec2(-0.5,-0.5),new vec2(0.3,0.5), -0.9)
                                         ]);
 
         this.playerGroup = new RenderGroup(state,[new Player(state)])

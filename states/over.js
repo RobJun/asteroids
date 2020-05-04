@@ -22,7 +22,7 @@ class OverState extends State {
                 this.statGroup,
             new GameButton(state,()=>{SM.change = 1},
                     {position : new vec2(-0.5,-0.4), scale: new vec2(5,2),fillColor : "red",strokeColor : "white", lineWidth : 3},
-                    {message : "try again",font : "Orbitron",size : 20}),
+                    {message : "Try again",font : "Orbitron",size : 20}),
             new GameButton(state,()=>{SM.change = 0},
                     {position : new vec2(-0.5,-0.7), scale: new vec2(5,2),fillColor : "red",strokeColor : "white", lineWidth : 3},
                     {message : "Back to menu",font : "Orbitron",size : 20})

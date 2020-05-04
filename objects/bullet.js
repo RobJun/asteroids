@@ -43,6 +43,7 @@ setUp(initPos, direction) {
         if(this.exists && this.disFromInit() > 0.5){
             this.exists = false;
             this.notify("delete",this);
+            STATS.allBullets++;
         }
         for(var i = 0; i < this.actualPosition.length; i+=2){
             var vec = calculateVector({x : this.actualPosition[i], y : this.actualPosition[i+1]}, calculateTranslate(this.direction.multiply(delta)));

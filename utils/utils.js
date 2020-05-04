@@ -1,6 +1,6 @@
 var AREA = {
     aspect: 3/4,
-    width :800,
+    width :1200,
     height : Number,
     image: 1222,
 
@@ -18,12 +18,15 @@ var STATS = {
     multiplier : 1,
     destroyed : 0,
     accuracy : 0,
+    allBullets : 0,
+    hit : 0,
 
     reset : function(){
         this.score = 0;
         this.multiplier =1;
         this.destroyed = 0;
-        this.accuracy = 0;
+        this.allBullets = 0;
+        this.hit = 0;
     }
 }
 

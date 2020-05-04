@@ -56,8 +56,10 @@ class SATmanager{
 
     }
     checkForCollision(object1 = {actualPosition, satIndex,collided},object2 = {actualPosition, satIndex,collided},drawAxis,context){
-        var obj2Max, obj2Min;
-        var obj1Max, obj1Min;
+        var obj2Max, obj2Min, totalX1;
+        var obj1Max, obj1Min, totalX2;
+        var minimal = 46545464654646;
+        var smallest = null;
 
         var testedAxis = new Array;
         if(object1.satIndex === -1 && object2.satIndex === -1){
@@ -99,54 +101,19 @@ class SATmanager{
                         }
                     }
                 }
-                if(drawAxis==1){
-                    this.drawObjectProj(context,{max :obj1Max, min: obj1Min},{max :obj2Max, min: obj2Min},vector);
-                }
-
                 if(!((obj2Max - obj1Min) * (obj1Max - obj2Min) >= 0))
                 {return false}
+                
+                var h = Math.max(obj1Min,obj2Min) - Math.max(obj1Max,obj2Max);
+                if(h < minimal){
+                    totalX1 = obj1Min
+                    totalX2 = obj2Min
+                    minimal = h;
+                    smallest = testedAxis[k][j];
+                }
             }
         }
-        return true;
-    }
-
-    drawAxis(context){
-        this.draw = 1;
-        this.axis.forEach(el =>{
-            el.forEach(ele =>{
-                context.beginPath();
-        var axisV = convertToPixels(-ele.x,-ele.y);
-        context.moveTo(axisV.x, axisV.y);
-         axisV = convertToPixels(ele.x,ele.y);
-        context.lineTo(axisV.x,axisV.y);
-        context.closePath();
-        context.strokeStyle= "#FF000044";
-        context.stroke();
-            })
-        })
-    }
-
-    drawObjectProj(context,object1 = {max, min}, object2 = {max,min}, vector = {x,y}){
-            var vect = new vec2(vector.x*object1.min, vector.y*object1.min);
-            var axisV = convertToPixels(vect.x,vect.y);
-            context.beginPath();
-            context.moveTo(axisV.x, axisV.y);
-            vect = new vec2(vector.x*object1.max, vector.y*object1.max);
-            axisV = convertToPixels(vect.x,vect.y);
-            context.lineTo(axisV.x,axisV.y);
-            context.closePath();
-            context.strokeStyle= "yellow";
-            context.stroke();
-
-            vect = new vec2(vector.x*object2.min, vector.y*object2.min);
-            axisV = convertToPixels(vect.x,vect.y);
-            context.beginPath();
-            context.moveTo(axisV.x, axisV.y);
-            vect = new vec2(vector.x*object2.max, vector.y*object2.max);
-            axisV = convertToPixels(vect.x,vect.y);
-            context.lineTo(axisV.x,axisV.y);
-            context.closePath();
-            context.strokeStyle= "green";
-            context.stroke();
+        minimal = (totalX1 < totalX2) ? Math.abs(minimal) : -Math.abs(minimal);
+        return (new vec2(smallest.x*minimal, smallest.y*minimal));
     }
 }

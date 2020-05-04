@@ -12,7 +12,6 @@ class MenuState extends State{
                                                     {message : "Controls",font : "Orbitron",size :20}),
                                             new GameButton(this,(button)=>{
                                                                     SM.soundMan.mute();
-                                                                    console.log(SM.soundMan.muted)
                                                                     if(SM.soundMan.muted){
                                                                         state.objects[3].posImg = new vec2(127,512);
                                                                         button.text.text = "sound OFF [X]";

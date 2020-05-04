@@ -47,7 +47,6 @@ class GameImage extends _SUPER_OBJECT{
             this.offset=0;
         }
         this.time+=delta;
-        console.log(this.time);
         }
     }
 

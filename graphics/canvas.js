@@ -25,7 +25,6 @@ class GameArea {
 
     async start(){
         await this.stateManager.init();
-        console.log("start");
         this.updateView();
     }
 }

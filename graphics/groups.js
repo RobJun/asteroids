@@ -50,8 +50,9 @@ class RenderGroup {
             if("collisionMap" in element){
                  for(var i = index+1; i < objects.length; i++){
                      if("collisionMap" in objects[i]){
-                            if(sat.checkForCollision(element,objects[i])){
-                                 element.onCollision(objects[i]);
+                            var s;
+                            if((s =sat.checkForCollision(element,objects[i]))){
+                                 element.onCollision(objects[i],s);
                              }
                      }
                  }
@@ -64,8 +65,9 @@ class RenderGroup {
             if("collisionMap" in element){
                 group.forEach(e => {
                     if("collisionMap" in e){
-                        if(sat.checkForCollision(element,e)){
-                            element.onCollision(e);
+                        var s;
+                        if((s =sat.checkForCollision(element,e))){
+                            element.onCollision(e,s);
                             e.onCollision(element);
                         }
                     }

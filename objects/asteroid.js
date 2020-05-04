@@ -1,44 +1,45 @@
+var maps = [
+    [
+        0.07,0.05,
+        0.10,0.0,
+        0.10,-0.05,
+        0.06,-0.11,
+        0.0,-0.10,
+        -0.05,-0.04,
+        -0.03,-0.030,
+        -0.05,-0.01,
+        -0.05,0.025,
+        0.0,0.06
+    ],
+    [
+        0.0,0.0625,
+        0.05,0.0375,
+        0.0875,-0.0125,
+        0.05,-0.05,
+        0,-0.0625,
+        -0.075,0.0,
+        -0.05,0.05,
+    ],
+    [
+        0.0,0.15,
+        0.075,0.125,
+        0.1,0.05,
+        0.075,0.0,
+        0.1,-0.05,
+        0.05,-0.15,
+        0.0,-0.1,
+        -0.05,-0.125,
+        -0.1,-0.05,
+        -0.1,0.05,
+        -0.025,0.075 
+    ]
+]
+
 class asteroid extends Shape{
-    constructor(parent,scale){
-        super(parent,undefined,undefined,{fillColor : "gray", strokeColor : "gray"});
+    constructor(parent,scale ,verteciesMap){
+        super(parent,undefined,undefined,{ strokeColor : "gray", lineWidth : 4});
         this.type = "asteroid";
-        this.vertecies = [
-            0.07,0.05,
-            0.10,0.0,
-            0.10,-0.05,
-            0.06,-0.11,
-            0.0,-0.10,
-            -0.05,-0.04,
-            -0.03,-0.030,
-            -0.05,-0.01,
-            -0.05,0.025,
-            0.0,0.06
-        ];
-        
-        /* this.vertecies = [
-            0.0,0.25,
-            0.2,0.15,
-            0.35,-0.05,
-            0.2,-0.2,
-            0,-0.25,
-            -0.3,0.0,
-            -0.2,0.2,
-            
-        ];
-        
-        /*this.vertecies = [
-            0.0,0.3,
-            0.15,0.25,
-            0.2,0.1,
-            0.15,0.0,
-            0.2,-0.1,
-            0.1,-0.3,
-            0.0,-0.2,
-            -0.1,-0.25,
-            -0.2,-0.1,
-            -0.2,0.1,
-            -0.05,0.15
-        ]*/
+        this.vertecies = maps[verteciesMap || 0].slice();
         this.collisionMap = [
             0.07,0.05,
             0.10,0.0,
@@ -61,6 +62,7 @@ class asteroid extends Shape{
             inY : true,
             inX : true
         }
+        this.in = true;
         
         for(var i = 0; i < this.collisionMap.length;i+=2){
             var vector = this.scale({x:this.collisionMap[i],y:this.collisionMap[i+1]},this.scaleVec);
@@ -105,17 +107,21 @@ class asteroid extends Shape{
         Constant.y /=2;
         this.direction.x = (object2.direction.x + Constant.x - this.direction.x);
         this.direction.y = (object2.direction.y + Constant.y - this.direction.y);
-        object2.direction = Constant.multiply(0.9);
+        object2.direction = Constant;
     }
 
-    onCollision(object){
+    onCollision(object,mtv){
         if(object.type == "asteroid"){
-            this.bounce(object);
+            
+            this.direction = mtv.multiply(-5);
+            object.direction = mtv.multiply(5);
         }
         else  if(object.type == "ship"){
-            this.bounce(object);
+            this.direction = mtv.multiply(-5);
         }else if(object.type == "bullet"){
             this.health-= object.damage;
+            STATS.hit++;
+            STATS.allBullets++;
             this.notify("delete",object);
             if(this.destroyed()){
                 this.notify("destroyed",this);
@@ -124,21 +130,27 @@ class asteroid extends Shape{
     }
 
     move(delta){
-        if(this.in && this.out.inX && (this.center.x < -1||this.center.x >1)){
+        if(this.direction.x > 0.3){
+            this.direction.x = 0.3;
+        }else if(this.direction.x < -0.3){
+            this.direction.x = -0.3;
+        }
+        if(this.direction.y > 0.3){
+            this.direction.y = 0.3;
+        }else if(this.direction.y < -0.3){
+            this.direction.y = -0.3;
+        }
+        
+        if(this.out.inX && Math.abs(this.center.x) > 1.1){
             this.direction.x = -this.direction.x;
-            this.out.inX = false;
-        }else if(this.center.x >= -0.8||this.center.x <= 0.8) {
+        }else if(Math.abs(this.center.x) <= 1) {
             this.out.inX = true;
         }
 
-        if(this.in && this.out.inY && (this.center.y < -1 ||this.center.y >1)){
+        if( this.out.inY && Math.abs(this.center.y) > 1.1){
             this.direction.y = -this.direction.y;
-            this.out.inY = false;
-        } else if(this.center.y >= -0.8||this.center.y <= 0.8) {
+        } else if(Math.abs(this.center.y) <= 1) {
             this.out.inY = true;
-        }
-        if(!this.in && Math.abs(this.center.y) <= 1 && Math.abs(this.center.x) <= 1){
-            this.in = true;
         }
         var direction = this.direction.multiply(delta);
         for(var i = 0; i < this.collisionMap.length; i+=2){

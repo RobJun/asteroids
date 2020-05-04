@@ -7,9 +7,9 @@ class PowerUp extends GameImage{
         }
         super(parent,key,pos,posCenter, new vec2(AREA.image),new vec2(128),undefined,undefined);
         this.dSpeed = 60;
-        this.tick = 0;
+        this.time = 0;
         this.startDis = this.maxTime/2;
-        this.maxTime = 800;
+        this.maxTime = 5;
         this.type="powerup";
         if(pos.x/128 === 1){
             this.item = 1;
@@ -27,7 +27,10 @@ class PowerUp extends GameImage{
     }
 
     move(delta){
-
+        this.time += delta;
+        if(this.time >= this.maxTime){
+            this.notify("delete",this);
+        }
         return true;
     }
 }

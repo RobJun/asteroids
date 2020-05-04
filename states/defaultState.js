@@ -89,7 +89,6 @@ class State{
                 this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}=collision`)
             }
             if(!Math.floor(Math.random()*4)){
-                console.log(1);
                 this.notify("create=powerup");
             }
             this.notify("scoreUpdate");
@@ -98,7 +97,7 @@ class State{
                 manager.change = 3;
                 manager.current.reason = object.collided.with;
                 manager.current.objects[6].objects[0].text = `${STATS.score}`;
-                manager.current.objects[6].objects[1].text = `${STATS.accuracy}%`;
+                manager.current.objects[6].objects[1].text = `${(STATS.allBullets == 0) ? 0 : Math.round(STATS.hit/STATS.allBullets*10000)/100}%`;
                 manager.current.objects[6].objects[2].text = `${STATS.destroyed}`;
                 manager.restore(1);
                 
@@ -124,24 +123,22 @@ class State{
                 posit = JSON.parse(m[m.indexOf("position")+1]);
                 vector = new vec2(posit.x,posit.y);
                 dir = new vec2(((Math.random()*3) -1)/2,((Math.random()*3) -1)/2);
+                dir = dir.unitVector();
             }else{
-            var pos = Math.floor(Math.random()*2);
-            var pos2 = Math.random() * 3 -1;
-            if(pos == 0) pos-=1;
-            var dirO = -Math.random()*pos;
-            var dir1 = (Math.random()*3) -1;
-            if(Math.floor(Math.random()*2) == 0){
-                dir = new vec2(dirO, dir1)
-                vector = new vec2(pos,pos2);
-            }else{
-                vector = new vec2(pos2,pos);
-                dir = new vec2(dir1,dirO);
+                var pos = Math.floor(Math.random()*2);
+                var pos2 = Math.random() * 3 -1;
+                if(pos == 0) pos-=1;
+                if(Math.floor(Math.random()*2) == 0){
+                    vector = new vec2(pos,pos2);
+                }else{
+                    vector = new vec2(pos2,pos);
+                }
+                dir = vector.unitVector().invert();
             }
-            }
-            dir = dir.multiply(1/(Math.random()*10+1));
+            
 
 
-            var aster = new asteroid(t,new vec2(scale || Math.floor(Math.random()*2)+1)).setUp( vector,dir, -0.3);
+            var aster = new asteroid(t,new vec2(scale || Math.floor(Math.random()*2)+1),Math.floor(Math.random()*2)+1).setUp( vector,dir, -0.3);
             if(m.includes("collision"))
                     this.SAT.addSprite(aster);
             else
