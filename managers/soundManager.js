@@ -20,13 +20,13 @@ class SoundManager {
     } 
 
     async playAsync(sound){
-        await wait(_ => stateManager.soundMan.muted === false)
+        await wait(_ => this.muted === false)
         this.sounds.get(sound).play();
         this.stopAsync(sound);
     }
 
     async stopAsync(sound){
-        await wait(_ =>  stateManager.soundMan.muted === true)
+        await wait(_ =>  this.muted === true)
         this.sounds.get(sound).pause();
         this.playAsync(sound);
     }

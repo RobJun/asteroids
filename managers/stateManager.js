@@ -18,7 +18,8 @@ class StateManager{
                                      "./res/sounds/mainTitle.wav",
                                      "./res/sounds/explosion.wav",
                                      "./res/sounds/shoot.wav",
-                                     "./res/sounds/damageShip.mp3"
+                                     "./res/sounds/damageShip.mp3",
+                                     "./res/vybuch.png"
                                       );
     }
 

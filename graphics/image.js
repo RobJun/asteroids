@@ -1,9 +1,9 @@
 class GameImage extends _SUPER_OBJECT{
-    constructor(parent,key,posSprite,posCenter, proportions,sprite,animate,onTicks){
+    constructor(parent,key,posSprite,posCenter, proportions,sprite,animate,onTicks,offset){
         super(parent);
-        this.tick = 1;
-
-        this.onTicks = onTicks || [60];
+        this.time =0;
+        this.offset = offset || 0;
+        this.onTicks = onTicks || [1];
         this.onTicksCurrent = 0;
         this.animate = animate || false;
         this.type = "image";
@@ -38,13 +38,20 @@ class GameImage extends _SUPER_OBJECT{
     updateImageLeft(){
         this.posImg.x = (this.posImg.x+this.spritewidth)%this.image.width;
     }
+    move(delta){
+        if(this.animate){
+        if(this.time >= this.onTicks[this.onTicksCurrent]+this.offset){
+            this.onTicksCurrent = (++this.onTicksCurrent)%this.onTicks.length;
+            this.updateImageLeft();
+            this.time=0;
+            this.offset=0;
+        }
+        this.time+=delta;
+        console.log(this.time);
+        }
+    }
 
     render(con){
-    if(this.animate && this.tick%this.onTicks[this.onTicksCurrent] == 0){
-        this.onTicksCurrent = (++this.onTicksCurrent)%this.onTicks.length;
-        this.updateImageLeft();
-    }
-    this.tick++;
     var center = vec2.convertToPixels(this.position);
     var start = {x : center.x-this.width/2, y : center.y-this.height/2};
     con.drawImage(this.image,

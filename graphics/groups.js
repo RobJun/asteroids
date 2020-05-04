@@ -7,7 +7,7 @@ class RenderGroup {
     }
 
     notify(message,object){
-                this.parent.notify(message, object);
+        this.parent.notify(message, object);
     }
 
 

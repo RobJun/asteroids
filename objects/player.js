@@ -29,7 +29,7 @@ class Player extends Shape{
         this.direction = new vec2(0,0);
         this.resistance = 0.05;
 
-        this.add = 0;
+        this.time = 0;
         this.set = false;
 
         this.controls = {
@@ -70,9 +70,9 @@ class Player extends Shape{
 
     onCollision(object){
         if(object.type == "asteroid" && this.controls.invincible == 0){
+            if(!this.controls.shield){
             this.health -=object.damage;
             this.controls.invincible = 60;
-            if(!this.controls.shield){
             this.notify(`damaged=${object.damage}`,this);
             if(this.destroyed()){
                 this.notify("destroyed",this);
@@ -169,9 +169,9 @@ class Player extends Shape{
     }
 
     move(delta){
-        if(this.add >= 1 ){
+        if(this.time >= 1 ){
             STATS.score += 1* STATS.multiplier;
-            this.add = 0;
+            this.time = 0;
             this.notify("scoreUpdate",this);
         }
         if(STATS.destroyed == 1 && this.set == false){
@@ -186,7 +186,7 @@ class Player extends Shape{
         }else if (!STATS.destroyed == 1  && !STATS.destroyed == 10 && !STATS.destroyed == 30){
             this.set = false
         }
-        this.add+= delta;
+        this.time+= delta;
         this._move(delta);
     }
 }

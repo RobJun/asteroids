@@ -11,9 +11,9 @@ class ControlState extends State{
             new PlayerDummy(state,new vec2(0.4,-0.15),[4,0])
         ])
         this.buttonGroup = new RenderGroup(state,[
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,0),new vec2(-0.6,0.10),new vec2(AREA.image),new vec2(128),true,[120,60]),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,128),new vec2(-0.6,-0.10),new vec2(AREA.image),new vec2(128),true,[60,120]),
-            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,256),new vec2(-0.2,0),new vec2(AREA.image),new vec2(128),128,128,true),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,0),new vec2(-0.6,0.10),new vec2(AREA.image),new vec2(128),true,[1],1),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,128),new vec2(-0.6,-0.10),new vec2(AREA.image),new vec2(128),true,[1]),
+            new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,256),new vec2(-0.2,0),new vec2(AREA.image),new vec2(128),true),
             new GameImage(state,SM.resourceMan.images.get("sprite"),new vec2(0,384),new vec2(0.2,0),new vec2(AREA.image),new vec2(128),true)
         ])
         this.objects = [

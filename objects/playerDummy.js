@@ -6,7 +6,7 @@ class PlayerDummy extends Player{
         this.sim = 0;
         this.pos = position || new vec2(0,0);
         this.simulate = simulate;
-        
+        this.time = 0;
 
         this.speed = 0.5;
         this.rotSpeed = 2;
@@ -22,7 +22,7 @@ class PlayerDummy extends Player{
     
     
     simKeypress(){
-        if(this.tick%60 == 0){
+        if(this.time >= 1){
             switch(this.simulate[this.sim]){
                 case 0:
                     this.controls.rotate = 0;
@@ -44,8 +44,8 @@ class PlayerDummy extends Player{
             } 
             this.sim++
             this.sim = this.sim%this.simulate.length;
+            this.time=0;
         }
-        this.tick++;
     }
 
     teleport(moveVec){
@@ -57,7 +57,8 @@ class PlayerDummy extends Player{
     }
 
     move(delta){
-        this.simKeypress();
+        this.simKeypress(delta);
+        this.time += delta;
         this._move(delta);
     }
 }

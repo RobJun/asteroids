@@ -104,10 +104,10 @@ class State{
                 
             },2000,this.SM);
         }
-        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("sprite"),new vec2(128,760),center,new vec2(AREA.image*scale),new vec2(128),false));
+        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("vybuch"),new vec2(0,0),center,new vec2(AREA.image*scale/2),new vec2(169),true,[0.1]));
                 setTimeout((state)=>{
                         state.objects.shift();
-                    },2000,this.objects[4]);  
+                    },700,this.objects[4]);  
     }
 
 
