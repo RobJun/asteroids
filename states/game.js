@@ -24,7 +24,8 @@ class GameState extends State{
             this.exploded,
             this.powerGroup,
             this.statsGroup,
-            new Timer(state)
+            new Timer(state),
+            new PauseCon(state,1)
              ]
 
         this.addCollision();

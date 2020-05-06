@@ -60,6 +60,8 @@ class State{
                 arr =  arr.objects[object.index[i]];
             }
             arr.shiftFrom(object.index[i]);
+        }else if(m[0] === "pause"){
+            this.SM.notify(message,object);
         }
     }
 

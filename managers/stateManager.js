@@ -46,6 +46,19 @@ class StateManager{
         }
     }
 
+    notify(message,object){
+        var m = message.split("=");
+        if(m[0] == "pause"){
+            if(m[1] === "on"){
+            var s = new Paused(this);
+                s.prev = this.current;
+                this.current = s
+            }else if(m[1] === "off"){
+                this.current = this.current.prev;
+            }
+        }
+    }
+
     async init(){
         await this.resourceMan.loadResources();
         this.soundMan.soundMap = this.resourceMan.sounds;
@@ -57,7 +70,7 @@ class StateManager{
             //ovladanie
             new ControlState(this),
             //game over
-            new OverState(this)
+            new OverState(this),
         ]
         this.soundMan.soundProperties("mainTitle",{loop : true})
         this.soundMan.playAsync("mainTitle");
@@ -85,6 +98,7 @@ class StateManager{
         }else if(!this.controller.keys[88]){
             this.pressed = false;
         }
+
         this.current.render(context,this.controller,this.time.delta);
     }
 }

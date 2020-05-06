@@ -29,6 +29,7 @@ class GameButton extends _SUPER_OBJECT{
     checkKey(controller){
         if(controller.mousecoords.x > this.pos.vertecies[6] && controller.mousecoords.x < this.pos.vertecies[0] 
             && controller.mousecoords.y > this.pos.vertecies[5] && controller.mousecoords.y < this.pos.vertecies[1] ){
+                document.body.style.cursor = "pointer";
                 this.body.color = '#b30000';
                 if(controller.buttons[0] && this.clicked === false){
                     this.action(this);
@@ -38,6 +39,7 @@ class GameButton extends _SUPER_OBJECT{
                 }
             } else{
                 this.body.color = "red";
+                document.body.style.cursor = "default"
             }
     }
 

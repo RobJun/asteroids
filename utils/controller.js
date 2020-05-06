@@ -5,6 +5,7 @@
         this.buttons = new Array(3);
         this.mousecoords = new vec2;
         this.out = false;
+        this.wasout=false;
         this.child = undefined;
         this.size = this.getBoundingClientRect()
 
@@ -46,10 +47,10 @@
 
     pause(e){
         this.out = true;
-        this.focus();
     }
 
     focusC(e){
         this.out = false;
+        
     }
 }
