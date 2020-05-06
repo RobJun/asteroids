@@ -40,10 +40,9 @@ class StateManager{
         return this.states.length-1;
     }
 
-     restore(index){
-        var t =this;
+    restore(index){
         if(typeof this.states[index] !== 'undefined'){
-            this.states.splice(index,1,new GameState(t));
+            this.states.splice(index,1,new GameState(this));
         }
     }
 

@@ -7,7 +7,6 @@ class State{
         this.callback = renderCallback || State.defaultCallback;
         this.Reloadtick = 0;
         this.collision = true;
-        this.interval = setInterval(_ => {},99999999999);
     }
 
 
@@ -61,9 +60,6 @@ class State{
                 arr =  arr.objects[object.index[i]];
             }
             arr.shiftFrom(object.index[i]);
-        }else if(m[0] === "start"){
-            clearInterval(this.interval);
-            this.interval = setInterval(spawnAsteroids,parseInt(m[1]),this);
         }
     }
 
@@ -75,35 +71,32 @@ class State{
         for(; i < object.index.length-1;i++){
             arr =  arr.objects[object.index[i]];
         }
-        var score = object.score || 0;
-        var index = object.index[i];
-        var type = object.type;
-        var center = object.center;
-        var scale = object.scaleVec.x;
-        arr.shiftFrom(index);
-        if(type === "asteroid"){
-            STATS.score+= score* STATS.multiplier;
+        arr.shiftFrom(object.index[i]);
+        if(object.type === "asteroid"){
+            STATS.score+= object.score* STATS.multiplier;
             STATS.destroyed++
-            if(scale -0.5 > 0.5){
-                this.notify(`create=asteroid=position=${JSON.stringify(center.add(0.1))}=scale=${scale  - 0.5}=collision`)
-                this.notify(`create=asteroid=position=${JSON.stringify(center.add(-0.1))}=scale=${scale  - 0.5}=collision`)
+            STATS.spawnedAsteroids--;
+            if( object.scaleVec.x -0.5 > 0.5){
+                this.notify(`create=asteroid=position=${JSON.stringify(object.center.add(0.1))}=scale=${object.scaleVec.x  - 0.5}=collision`)
+                this.notify(`create=asteroid=position=${JSON.stringify(object.center.add(-0.1))}=scale=${object.scaleVec.x  - 0.5}=collision`)
             }
             if(!Math.floor(Math.random()*4)){
                 this.notify("create=powerup");
             }
             this.notify("scoreUpdate");
-        } else if(type === "ship"){
+        } else if(object.type === "ship"){
             setTimeout((manager)=>{
                 manager.change = 3;
-                manager.current.reason = object.collided.with;
-                manager.current.objects[6].objects[0].text = `${STATS.score}`;
+                STATS.best = STATS.score > STATS.best ? STATS.score : STATS.best;
+                manager.current.objects[6].objects[0].text = `${STATS.score} [${ STATS.best == STATS.score ? "best" : STATS.best}]`;
                 manager.current.objects[6].objects[1].text = `${(STATS.allBullets == 0) ? 0 : Math.round(STATS.hit/STATS.allBullets*10000)/100}%`;
                 manager.current.objects[6].objects[2].text = `${STATS.destroyed}`;
+                STATS.reset();
                 manager.restore(1);
                 
             },2000,this.SM);
         }
-        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("vybuch"),new vec2(0,0),center,new vec2(AREA.image*scale/2),new vec2(169),true,[0.1]));
+        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("vybuch"),new vec2(0,0),object.center,new vec2(AREA.image*object.scaleVec.x/2),new vec2(169),true,[0.1]));
                 setTimeout((state)=>{
                         state.objects.shift();
                     },700,this.objects[4]);  
@@ -113,6 +106,7 @@ class State{
     _create(m,object){
         var t = this;
         if(m[1] === "asteroid"){
+            STATS.spawnedAsteroids++;
             var scale = undefined;
             if(m.includes("scale")){
                 scale = m[m.indexOf("scale")+1];
@@ -135,17 +129,12 @@ class State{
                 }
                 dir = vector.unitVector().invert();
             }
-            
-
-
             var aster = new asteroid(t,new vec2(scale || Math.floor(Math.random()*2)+1),Math.floor(Math.random()*2)+1).setUp( vector,dir, -0.3);
             if(m.includes("collision"))
                     this.SAT.addSprite(aster);
             else
                 aster.setSatIndex(this.objects[1].objects[this.objects[1].objects.length-1]);
             this.objects[1].addObject(aster);
-
-
         }else if(m[1] === "bullet"){
             this.SM.soundMan.play = "shoot";
             for(var i = 0; i < object.controls.bullet;i++){
@@ -154,7 +143,6 @@ class State{
             bullet.satIndex = 1;
             this.objects[3].addObject(bullet);
             }
-            
         }else if(m[1]==="powerup"){
             var vector = new vec2();
             if(m.includes("position")){

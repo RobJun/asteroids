@@ -15,11 +15,13 @@ var AREA = {
 
 var STATS = {
     score : 0,
+    best : 0,
     multiplier : 1,
     destroyed : 0,
     accuracy : 0,
     allBullets : 0,
     hit : 0,
+    spawnedAsteroids : 3,
 
     reset : function(){
         this.score = 0;
@@ -27,6 +29,7 @@ var STATS = {
         this.destroyed = 0;
         this.allBullets = 0;
         this.hit = 0;
+        this.spawnedAsteroids = 3;
     }
 }
 

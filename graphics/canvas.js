@@ -7,7 +7,6 @@ class GameArea {
         this.canvas.height= this.canvas.width*aspectRatio;
         this.stateManager = stateMan;
         this.game = this;
-        this.limitFrames = 60;
     }
 
     clear(context){
@@ -17,10 +16,9 @@ class GameArea {
     updateView(){
         this.clear(this.context);
         this.stateManager.render(this.context);
-        setTimeout( ()=>{
         requestAnimationFrame(()=>{
             this.updateView();
-        })},1000/this.limitFrames);
+        })
     }
 
     async start(){

@@ -25,6 +25,7 @@ class vec2{
     copy(x){
         this.x = x.x;
         this.y = x.y;
+        return this;
     }
 
     getDistancefromP(vector){

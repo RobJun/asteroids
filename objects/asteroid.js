@@ -117,7 +117,7 @@ class asteroid extends Shape{
             object.direction = mtv.multiply(5);
         }
         else  if(object.type == "ship"){
-            this.direction = mtv.multiply(-5);
+            this.direction = new vec2().copy(object.actDirec).multiply(3);
         }else if(object.type == "bullet"){
             this.health-= object.damage;
             STATS.hit++;

@@ -28,6 +28,5 @@ class OverState extends State {
                     {message : "Back to menu",font : "Orbitron",size : 20})
         ];
         this.setIndexes();
-        this.reason;
     }
 }

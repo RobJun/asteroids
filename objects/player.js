@@ -28,10 +28,11 @@ class Player extends Shape{
         this.teleported = false;
         this.direction = new vec2(0,0);
         this.resistance = 0.05;
+        this.actDirec = new vec2();
 
         this.time = 0;
+        this.spawnTime= 0;
         this.set = false;
-
         this.controls = {
             shoot : false,
             move : false,
@@ -120,7 +121,9 @@ class Player extends Shape{
         var rot = this.controls.rotate* this.rotSpeed * delta;
         this.angle +=rot;
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
+        this.actDirec = new vec2().copy(dir);
         dir = dir.multiply(this.speed* delta);
+
         var diff = new vec2;
         for(var i = 0; i < this.collisionMap.length;i+=2){
             var rotateColMap = calculateVector({x : this.collisionMap[i], y : this.collisionMap[i+1]},calculateRotationMat(rot));
@@ -173,18 +176,6 @@ class Player extends Shape{
             STATS.score += 1* STATS.multiplier;
             this.time = 0;
             this.notify("scoreUpdate",this);
-        }
-        if(STATS.destroyed == 1 && this.set == false){
-            this.notify("start=5000",this);
-            this.set = true
-        }else if(STATS.destroyed == 10 && this.set == false){
-            this.notify("start=2500",this)
-            this.set = true
-        }else if(STATS.destroyed == 30 && this.set == false){
-            this.notify("start=1000",this)
-            this.set = true
-        }else if (!STATS.destroyed == 1  && !STATS.destroyed == 10 && !STATS.destroyed == 30){
-            this.set = false
         }
         this.time+= delta;
         this._move(delta);

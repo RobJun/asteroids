@@ -14,9 +14,7 @@ class Bullet extends Shape{
     this.bulletRadius = 0.9;
 
     this.type = "bullet";
-
     this.damage = 50; 
-
     this.exists = true;
 }
 
@@ -40,8 +38,7 @@ setUp(initPos, direction) {
 
     }
     move(delta){
-        if(this.exists && this.disFromInit() > 0.5){
-            this.exists = false;
+        if( this.disFromInit() > 0.5){
             this.notify("delete",this);
             STATS.allBullets++;
         }
@@ -53,5 +50,21 @@ setUp(initPos, direction) {
         var vec = calculateVector(this.center,calculateTranslate(this.direction.multiply(delta)));
             this.center.x = vec.x;
             this.center.y = vec.y;
+    }
+
+    render(context){
+        context.beginPath();
+        var center = vec2.convertToPixels(this.center);
+        context.arc(center.x,center.y, 3, 0, 2 * Math.PI);
+        if(this.color !== undefined){
+            context.fillStyle = this.color;
+            context.fill();
+        }
+        if(this.colorS !== undefined){
+            context.lineWidth = this.lineWidth;
+            context.strokeStyle = this.colorS;
+            context.stroke();
+        }
+        context.closePath();
     }
 }
