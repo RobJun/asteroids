@@ -1,26 +1,40 @@
 <head>
-<style>
-    body {
-    margin: 0;
-    background-color: black;            
-}
-iframe {
-    display: block;   
-    border: none;         
-    height: 100vh;        
-    width: 100vw;
-}
-</style>
-<script> 
-window.onload = function(){
-    string = prompt("set resolution [aspect ratio, width]","3/4,800");
-    string= string.split(",");
-    var iframe = document.createElement("iframe");
-    iframe.src=`./index.html?aspect=${string[0]}&width=${string[1]}`
-    document.body.append(iframe);
-}
-</script>
+    <link href="style.css" rel="stylesheet">
+    <title>Asteroids</title>
+    <meta charset="utf-8">
+<script src="src/utils/utils.js"></script>
+<script src="src/utils/timer.js"></script>
+<script src="src/utils/controller.js"></script>
+<script src="src/managers/satcollision.js"></script>
+<script src="src/managers/resourceManager.js"></script>
+<script src="src/managers/soundManager.js"></script>
+<script src="src/managers/stateManager.js"></script>
+<script src="src/states/defaultState.js"></script>
+<script src="src/states/menu.js"></script>
+<script src="src/states/game.js"></script>
+<script src="src/states/control.js"></script>
+<script src="src/states/over.js"></script>
+<script src="src/states/paused.js"></script>
+<script src="src/graphics/superobject.js"></script>
+<script src="src/graphics/image.js"></script>
+<script src="src/graphics/shape.js"></script>
+<script src="src/graphics/text.js"></script>
+<script src="src/graphics/groups.js"></script>
+<script src="src/math/vector.js"></script>
+<script src="src/math/matricies.js"></script>
+<script src="src/objects/pausecon.js"></script>
+<script src="src/objects/player.js"></script>
+<script src="src/objects/playerDummy.js"></script>
+<script src="src/objects/bullet.js"></script>
+<script src="src/objects/asteroid.js"></script>
+<script src="src/objects/powerup.js"></script>
+<script src="src/objects/button.js"></script>
+<script src="src/objects/gameBar.js"></script>
+<script src="src/objects/score.js"></script>
+<script src="src/objects/explosion.js"></script>
+<script src="src/graphics/canvas.js"></script>
+<script src="src/main.js"></script>
 </head>
-<body>
-    
-</body>
+<div id="canvas-container">
+        <canvas id="area"></canvas>
+</div>

@@ -43,6 +43,7 @@ class State{
     }
 
     notify(message, object){
+        console.log(object)
         var m = message.split("=");
         if(m[0] === "damaged"){
            this.SM.soundMan.play = "damageShip";
@@ -54,6 +55,7 @@ class State{
         }else if(m[0] === "scoreUpdate"){
             this.objects[6].objects[1].updateText = STATS.score;
         }else if(m[0] ==="delete"){
+            console.log(object);
             let arr = this;
             var i = 0;
             for(; i < object.index.length-1;i++){
@@ -82,7 +84,7 @@ class State{
                 this.notify(`create=asteroid=position=${JSON.stringify(object.center.add(0.1))}=scale=${object.scaleVec.x  - 0.5}=collision`)
                 this.notify(`create=asteroid=position=${JSON.stringify(object.center.add(-0.1))}=scale=${object.scaleVec.x  - 0.5}=collision`)
             }
-            if(!Math.floor(Math.random()*4)){
+            if(!Math.floor(Math.random()*8)){
                 this.notify("create=powerup");
             }
             this.notify("scoreUpdate");
@@ -98,10 +100,7 @@ class State{
                 
             },2000,this.SM);
         }
-        var count = this.objects[4].objects.push(new GameImage(this,this.SM.resourceMan.images.get("vybuch"),new vec2(0,0),object.center,new vec2(AREA.image*object.scaleVec.x/2),new vec2(169),true,[0.1]));
-                setTimeout((state)=>{
-                        state.objects.shift();
-                    },700,this.objects[4]);  
+            this.notify("create=explosion",object);
     }
 
 
@@ -158,6 +157,9 @@ class State{
             }
             var power = new PowerUp(t,this.SM.resourceMan.images.get("sprite"), vector,new vec2(AREA.image));
             this.objects[5].addObject(power);
+        }else if(m[1]==="explosion"){
+            var s = new explosion(this,this.SM.resourceMan.images.get("vybuch"),object);
+            this.objects[4].addObject(s);
         }
     }
     

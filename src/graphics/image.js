@@ -38,7 +38,10 @@ class GameImage extends _SUPER_OBJECT{
     updateImageLeft(){
         this.posImg.x = (this.posImg.x+this.spritewidth)%this.image.width;
     }
+    _move(delta){};
+
     move(delta){
+        this._move(delta);
         if(this.animate){
         if(this.time >= this.onTicks[this.onTicksCurrent]+this.offset){
             this.onTicksCurrent = (++this.onTicksCurrent)%this.onTicks.length;
