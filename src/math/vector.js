@@ -44,6 +44,14 @@ class vec2{
         return new vec2(this.x/this.magnitude(), this.y/this.magnitude());
     }
 
+    getDirection(vector){
+        return new vec2(vector.x-this.x,vector.y -this.y);
+    }
+    
+    getAngle(){
+        return Math.acos(this.x/this.magnitude());
+    }
+
     static convertToPixels(vector){
         return new vec2((AREA.width*vector.x+AREA.width)/2,(-AREA.height*vector.y+AREA.height)/2);
     }
@@ -51,4 +59,5 @@ class vec2{
     static convertToCoords(vector){
         return new vec2((2*vector.x-AREA.width)/AREA.width,-(2*vector.y-AREA.height)/AREA.height);
     }
+
 }

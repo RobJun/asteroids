@@ -4,7 +4,7 @@ class GameArea {
         this.context = this.canvas.getContext("2d");
         this.aspectRatio = aspectRatio || 3/4;
         this.canvas.width = width || 800;
-        this.canvas.height= this.canvas.width*aspectRatio;
+        this.canvas.height= this.canvas.width/aspectRatio;
         this.stateManager = stateMan;
         this.game = this;
     }

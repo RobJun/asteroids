@@ -12,7 +12,7 @@ class OverState extends State {
             new GameText(state,"GAME OVER", new vec2(0,0.6),
                     {font : "Orbitron", size : 100}),
 
-            new Shape(state,undefined,undefined,{fillColor : "gray"}).moveShape(new vec2(-0.6,0.12),new vec2(90,55)),
+            new Shape(state,undefined,undefined,{fillColor : "gray"}).moveShape(new vec2(-0.6,0.12),new vec2(120,55)),
             new GameText(state,"score:", new vec2(-0.5,0.3),
                     {font : "Orbitron", size : 20, align : "right"}),
             new GameText(state,"accuracy:", new vec2(-0.5,0.12),

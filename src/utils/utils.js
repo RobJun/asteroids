@@ -1,13 +1,13 @@
 var AREA = {
-    aspect: 3/4,
-    width :1200,
-    height : Number,
-    image: 1222,
+    aspect: 4/3,
+    width : Number,
+    height : 900,
+    image: Number,
 
     fontBase : 800,
 
     setUp : function(){
-        this.height = this.aspect* this.width;
+        this.width = this.aspect* this.height;
         this.image = this.height/10;
     }
 }

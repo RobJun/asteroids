@@ -42,6 +42,8 @@ class Player extends Shape{
             bullet : 1,
             shield : false
         }
+
+        this.particles = new Particles(this,this.index);
     }
 
     checkKey(controller){
@@ -118,6 +120,11 @@ class Player extends Shape{
             this.direction.y = 0;
         }
 
+        if(this.direction.y > 0.2){
+            this.particles.createParticles(0.15,"#FFFFFF11");
+        }
+        this.particles.move(delta);
+        
         var rot = this.controls.rotate* this.rotSpeed * delta;
         this.angle +=rot;
         var dir = calculateVector(this.direction,calculateRotationMat(this.angle));
@@ -160,11 +167,12 @@ class Player extends Shape{
     }
 
     _render(context){
+        this.particles.render(context);
         if(this.controls.shield === true){
             context.beginPath();
             var center = this.getActPosPair(2);
             center = vec2.convertToPixels(center);
-            context.arc(center.x,center.y,30,0,2*Math.PI);
+            context.arc(center.x,center.y,vec2.convertToPixels(new vec2(-0.93)).x,0,2*Math.PI);
             context.closePath();
             context.strokeStyle = "cyan";
             context.stroke();

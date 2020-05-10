@@ -13,6 +13,7 @@ class GameButton extends _SUPER_OBJECT{
         ]
         this.pos.position = pos.position || new vec2;
         this.pos.scale = pos.scale || new vec2(0,0);
+        this.was = false;
 
         for(var i = 0; i < this.pos.vertecies.length;i+=2){
             var scale = calculateVector({x : this.pos.vertecies[i], y : this.pos.vertecies[i+1]},calculateScaleMat(this.pos.scale));
@@ -30,7 +31,9 @@ class GameButton extends _SUPER_OBJECT{
         if(controller.mousecoords.x > this.pos.vertecies[6] && controller.mousecoords.x < this.pos.vertecies[0] 
             && controller.mousecoords.y > this.pos.vertecies[5] && controller.mousecoords.y < this.pos.vertecies[1] ){
                 document.body.style.cursor = "pointer";
+                console.log(document.body.style.cursor);
                 this.body.color = '#b30000';
+                this.was = true;
                 if(controller.buttons[0] && this.clicked === false){
                     this.action(this);
                     this.clicked = true;
@@ -39,7 +42,10 @@ class GameButton extends _SUPER_OBJECT{
                 }
             } else{
                 this.body.color = "red";
-                document.body.style.cursor = "default"
+                if(this.was){
+                    document.body.style.cursor = "default"
+                    this.was = false;
+                }
             }
     }
 

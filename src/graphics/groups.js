@@ -1,9 +1,9 @@
 class RenderGroup {
-    constructor(parent, objects){
+    constructor(parent, objects, index){
         this.type = "group";
         this.parent = parent;
         this.objects = objects || new Array();
-        this.index = new Array;
+        this.index = index || new Array;
     }
 
     notify(message,object){

@@ -43,7 +43,6 @@ class State{
     }
 
     notify(message, object){
-        console.log(object)
         var m = message.split("=");
         if(m[0] === "damaged"){
            this.SM.soundMan.play = "damageShip";
@@ -55,7 +54,6 @@ class State{
         }else if(m[0] === "scoreUpdate"){
             this.objects[6].objects[1].updateText = STATS.score;
         }else if(m[0] ==="delete"){
-            console.log(object);
             let arr = this;
             var i = 0;
             for(; i < object.index.length-1;i++){
@@ -140,7 +138,7 @@ class State{
             this.SM.soundMan.play = "shoot";
             for(var i = 0; i < object.controls.bullet;i++){
                 if(i == 2) i++;
-            var bullet = new Bullet(t).setUp(object.getActPosPair(i),object.getVertPair(0).multiply(50));
+            var bullet = new Bullet(t,object.angle).setUp(object.getActPosPair(i),object.getVertPair(0).multiply(50));
             bullet.satIndex = 1;
             this.objects[3].addObject(bullet);
             }
