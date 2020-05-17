@@ -18,6 +18,11 @@ class SoundManager {
             this.sounds.get(sound).play();
         }
     } 
+    set play2(sound){
+        if(!this.muted){
+            this.sounds.get(sound).play();
+        }
+    } 
 
     async playAsync(sound){
         await wait(_ => this.muted === false)

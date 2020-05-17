@@ -19,6 +19,7 @@ class StateManager{
                                      "./res/sounds/explosion.wav",
                                      "./res/sounds/shoot.wav",
                                      "./res/sounds/damageShip.mp3",
+                                     "./res/sounds/blub.wav",
                                      "./res/vybuch.png"
                                       );
     }
@@ -78,6 +79,7 @@ class StateManager{
         this.soundMan.soundProperties("explosion",{volume : 0.1});
         this.soundMan.soundProperties("shoot",{volume : 0.1});
         this.soundMan.soundProperties("damageShip",{volume : 0.1});
+        this.soundMan.soundProperties("blub",{volume : 0.1});
         let t = this;
         states.forEach(e =>{
             t.addState = e;

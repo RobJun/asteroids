@@ -44,9 +44,10 @@ setUp(initPos, direction,angle) {
             this.notify("delete",this);
             STATS.allBullets++;
         }
-        this.particles.createParticles(0.5,"red", new vec2(0.1,0.8));
+
+        this.particles.createBulletPart(0.05,"red", new vec2(0.1,1));
         this.particles.move(delta);
-        console.log(this.particles);
+    
         for(var i = 0; i < this.actualPosition.length; i+=2){
             var vec = calculateVector({x : this.actualPosition[i], y : this.actualPosition[i+1]}, calculateTranslate(this.direction.multiply(delta)));
             this.actualPosition[i] = vec.x;

@@ -62,6 +62,8 @@ class State{
             arr.shiftFrom(object.index[i]);
         }else if(m[0] === "pause"){
             this.SM.notify(message,object);
+        }else if(m[0] === "play"){
+            this.SM.soundMan.play2 = "blub";
         }
     }
 

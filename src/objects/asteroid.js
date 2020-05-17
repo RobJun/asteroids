@@ -141,13 +141,13 @@ class asteroid extends Shape{
             this.direction.y = -0.3;
         }
         
-        if(this.out.inX && Math.abs(this.center.x) > 1.1){
+        if(this.out.inX && Math.abs(this.center.x) > 1.2){
             this.direction.x = -this.direction.x;
         }else if(Math.abs(this.center.x) <= 1) {
             this.out.inX = true;
         }
 
-        if( this.out.inY && Math.abs(this.center.y) > 1.1){
+        if( this.out.inY && Math.abs(this.center.y) > 1.2){
             this.direction.y = -this.direction.y;
         } else if(Math.abs(this.center.y) <= 1) {
             this.out.inY = true;
